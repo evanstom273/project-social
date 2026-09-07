@@ -25,11 +25,11 @@ type FeedFiltersProps = {
 	onCraftTagChange: (tag: string | null) => void;
 };
 
-const MEDIA_FILTERS: Array<{ id: MediaFilter; label: string; icon?: typeof IconImage }> = [
-	{ id: 'all', label: 'All Media' },
-	{ id: 'images', label: 'Images & Galleries', icon: IconImage },
-	{ id: 'video', label: 'Video & Clips (≤60s)', icon: IconVideo },
-	{ id: 'code', label: 'Code & Text', icon: IconCode },
+const MEDIA_FILTERS: Array<{ id: MediaFilter; label: string; shortLabel: string; icon?: typeof IconImage }> = [
+	{ id: 'all', label: 'All Media', shortLabel: 'All' },
+	{ id: 'images', label: 'Images & Galleries', shortLabel: 'Images', icon: IconImage },
+	{ id: 'video', label: 'Video & Clips (≤60s)', shortLabel: 'Video', icon: IconVideo },
+	{ id: 'code', label: 'Code & Text', shortLabel: 'Code', icon: IconCode },
 ];
 
 const POST_TYPE_FILTERS: Array<{ id: PostType | 'all'; label: string; dotClass?: string }> = [
@@ -47,6 +47,20 @@ const SORT_OPTIONS: Array<{ id: FeedSortMode; label: string }> = [
 	{ id: 'top-week', label: 'Top This Week' },
 ];
 
+function countActiveFilters(
+	mediaFilter: MediaFilter,
+	postTypeFilter: PostType | 'all',
+	craftTag: string | null,
+	sortMode: FeedSortMode,
+) {
+	let count = 0;
+	if (mediaFilter !== 'all') count += 1;
+	if (postTypeFilter !== 'all') count += 1;
+	if (craftTag) count += 1;
+	if (sortMode !== 'newest') count += 1;
+	return count;
+}
+
 export function FeedFilters({
 	mediaFilter,
 	postTypeFilter,
@@ -58,6 +72,7 @@ export function FeedFilters({
 	onCraftTagChange,
 }: FeedFiltersProps) {
 	const [sortOpen, setSortOpen] = useState(false);
+	const [mobileOpen, setMobileOpen] = useState(false);
 	const sortRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -73,12 +88,18 @@ export function FeedFilters({
 
 	const currentSortLabel =
 		SORT_OPTIONS.find((option) => option.id === sortMode)?.label ?? 'Newest First';
+	const activeFilterCount = countActiveFilters(
+		mediaFilter,
+		postTypeFilter,
+		craftTag,
+		sortMode,
+	);
 
-	return (
-		<div className="flex flex-col gap-2.5 border-t border-border-subtle/60 pt-1">
-			<div className="flex items-center justify-between gap-2 overflow-x-auto pb-0.5">
-				<div className="flex items-center gap-1.5">
-					<span className="mr-1 text-[11px] font-semibold uppercase tracking-wider text-text-faint">
+	const filterPanel = (
+		<>
+			<div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-2">
+				<div className="flex flex-wrap items-center gap-1.5">
+					<span className="mr-1 hidden text-[11px] font-semibold uppercase tracking-wider text-text-faint md:inline">
 						Media:
 					</span>
 					{MEDIA_FILTERS.map((filter) => {
@@ -92,13 +113,14 @@ export function FeedFilters({
 								className="gap-1"
 							>
 								{Icon ? <Icon className="size-3.5 text-text-faint" /> : null}
-								{filter.label}
+								<span className="md:hidden">{filter.shortLabel}</span>
+								<span className="hidden md:inline">{filter.label}</span>
 							</Chip>
 						);
 					})}
 				</div>
 
-				<div className="relative shrink-0" ref={sortRef}>
+				<div className="relative shrink-0 self-start" ref={sortRef}>
 					<button
 						type="button"
 						className="flex h-7 items-center gap-1.5 rounded-full border border-border-subtle bg-surface px-3 text-[12px] text-text-primary transition-colors hover:bg-surface-hover"
@@ -143,8 +165,8 @@ export function FeedFilters({
 				</div>
 			</div>
 
-			<div className="flex items-center gap-1.5 overflow-x-auto pb-0.5">
-				<span className="mr-1 text-[11px] font-semibold uppercase tracking-wider text-text-faint">
+			<div className="flex flex-wrap items-center gap-1.5">
+				<span className="mr-1 hidden text-[11px] font-semibold uppercase tracking-wider text-text-faint md:inline">
 					Post Type:
 				</span>
 				{POST_TYPE_FILTERS.map((filter) => (
@@ -171,7 +193,7 @@ export function FeedFilters({
 				))}
 			</div>
 
-			<div className="flex items-center gap-1.5 overflow-x-auto pt-1 text-caption text-text-faint">
+			<div className="flex flex-wrap items-center gap-1.5 pt-1 text-caption text-text-faint">
 				<span className="text-[11px]">Browse craft:</span>
 				{CRAFT_TAGS.map((tag) => (
 					<button
@@ -189,6 +211,41 @@ export function FeedFilters({
 					</button>
 				))}
 			</div>
+		</>
+	);
+
+	return (
+		<div className="border-t border-border-subtle/60 pt-1">
+			<div className="md:hidden">
+				<button
+					type="button"
+					className="flex w-full items-center justify-between rounded-xl border border-border-subtle bg-surface px-3 py-2.5 text-left transition-colors hover:bg-surface-hover"
+					aria-expanded={mobileOpen}
+					onClick={() => setMobileOpen((open) => !open)}
+				>
+					<span className="text-label-md text-text-primary">
+						Filters
+						{activeFilterCount > 0 ? (
+							<span className="ml-2 rounded-full bg-primary-muted px-2 py-0.5 text-[11px] text-primary">
+								{activeFilterCount} active
+							</span>
+						) : null}
+					</span>
+					<IconChevronDown
+						className={cn(
+							'size-4 text-text-faint transition-transform',
+							mobileOpen && 'rotate-180',
+						)}
+					/>
+				</button>
+				{mobileOpen ? (
+					<div className="mt-3 flex flex-col gap-3 rounded-xl border border-border-subtle bg-surface-subtle p-3">
+						{filterPanel}
+					</div>
+				) : null}
+			</div>
+
+			<div className="hidden flex-col gap-2.5 md:flex">{filterPanel}</div>
 		</div>
 	);
 }

@@ -29,7 +29,7 @@ export function FeedHeader({
 					<Text as="h1" variant="headline-lg">
 						Feed
 					</Text>
-					<div className="group relative flex cursor-help items-center gap-1.5 rounded-full border border-border-subtle bg-surface px-3 py-1">
+					<div className="group relative hidden cursor-help items-center gap-1.5 rounded-full border border-border-subtle bg-surface px-3 py-1 sm:flex">
 						<span
 							className="size-2 animate-pulse rounded-full bg-primary"
 							aria-hidden="true"
