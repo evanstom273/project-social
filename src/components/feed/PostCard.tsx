@@ -281,7 +281,7 @@ function PostActions({ post }: { post: FeedPost }) {
 
 export function PostCard({ post }: PostCardProps) {
 	return (
-		<article className="rounded-xl border border-border-subtle bg-surface-raised p-4 shadow-md transition-all duration-150 hover:border-border-default md:p-4">
+		<article className="max-w-full overflow-hidden rounded-xl border border-border-subtle bg-surface-raised p-4 shadow-md transition-all duration-150 hover:border-border-default md:p-4">
 			<div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
 				<div className="flex min-w-0 items-start gap-3">
 					<ProjectAvatar

@@ -49,8 +49,8 @@
   --radius-default: 0.75rem;
 
   --spacing-content-max: 80rem;
-  --spacing-feed-max: 44rem;
-  --spacing-gutter-mobile: 0.875rem;
+  --spacing-feed-max: 40rem;
+  --spacing-gutter-mobile: 1rem;
   --spacing-gutter-tablet: 1.25rem;
   --spacing-gutter-desktop: 1.5rem;
 
@@ -72,6 +72,7 @@
 
   html {
     font-family: var(--font-sans);
+    font-size: 75%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -79,12 +80,14 @@
   body {
     margin: 0;
     min-height: 100dvh;
+    overflow: hidden;
     background-color: var(--color-background);
     color: var(--color-text-primary);
   }
 
   #root {
     min-height: 100dvh;
+    overflow: hidden;
   }
 
   a {
