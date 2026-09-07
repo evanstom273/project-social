@@ -1,11 +1,10 @@
 import { NavLink } from 'react-router-dom';
 
-import { SHELL_SIDEBAR_NAV_ITEMS, ROUTES } from '@/config/constants';
+import { SHELL_SIDEBAR_NAV_ITEMS } from '@/config/constants';
 import { MOCK_CURRENT_USER } from '@/data/feed-mock';
 import { Avatar } from '@/components/ui/Avatar';
 import { cn } from '@/lib/cn';
 import {
-	IconAdd,
 	IconCommunities,
 	IconExplore,
 	IconHome,
@@ -55,15 +54,6 @@ export function ShellNavItems({ onNavigate }: ShellNavItemsProps) {
 					);
 				})}
 			</nav>
-
-			<NavLink
-				to={ROUTES.create}
-				className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary text-label-md font-bold text-on-primary shadow-[0_4px_16px_rgb(94_224_181_/_0.22)] transition-colors duration-fast hover:bg-primary-hover"
-				onClick={onNavigate}
-			>
-				<IconAdd className="size-5" />
-				New Update
-			</NavLink>
 		</div>
 	);
 }

@@ -9,6 +9,7 @@ import { IconSend } from '@/components/feed/icons';
 
 type FeedComposerProps = {
 	currentUser: FeedAuthor;
+	onPublish?: () => void;
 };
 
 const POST_TYPES: Array<{ id: PostType; label: string; tabClass?: string }> = [
@@ -33,16 +34,19 @@ const PUBLISH_LABELS: Record<PostType, string> = {
 	milestone: 'Post Milestone',
 };
 
-export function FeedComposer({ currentUser }: FeedComposerProps) {
+export function FeedComposer({ currentUser, onPublish }: FeedComposerProps) {
 	const [postType, setPostType] = useState<PostType>('update');
 	const [body, setBody] = useState('');
 	const [aiAssisted, setAiAssisted] = useState(false);
 
+	function handlePublish() {
+		setBody('');
+		setAiAssisted(false);
+		onPublish?.();
+	}
+
 	return (
-		<section
-			className="mb-8 rounded-xl border border-border-subtle bg-surface p-4 shadow-md"
-			aria-label="Create post"
-		>
+		<div aria-label="Create post">
 			<div className="mb-3 flex items-center justify-between gap-2 border-b border-border-subtle pb-2">
 				<div
 					className="flex items-center gap-1 rounded-lg border border-border-subtle bg-surface-subtle p-0.5"
@@ -131,13 +135,13 @@ export function FeedComposer({ currentUser }: FeedComposerProps) {
 					<Button
 						type="button"
 						className="h-9 gap-1.5 px-4 font-bold shadow-sm active:scale-95"
-						onClick={() => setBody('')}
+						onClick={handlePublish}
 					>
 						{PUBLISH_LABELS[postType]}
 						<IconSend className="size-4" />
 					</Button>
 				</div>
 			</div>
-		</section>
+		</div>
 	);
 }

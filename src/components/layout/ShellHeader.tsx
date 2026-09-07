@@ -1,10 +1,11 @@
 import { NavLink } from 'react-router-dom';
 
+import { useCompose } from '@/app/providers/use-compose';
 import { APP_NAME, ROUTES, SHELL_HEADER_NAV_ITEMS } from '@/config/constants';
 import { MOCK_CURRENT_USER } from '@/data/feed-mock';
 import { Avatar } from '@/components/ui/Avatar';
 import { cn } from '@/lib/cn';
-import { IconBell, IconMenu, IconSearch } from '@/components/feed/icons';
+import { IconAdd, IconBell, IconMenu, IconSearch } from '@/components/feed/icons';
 
 function headerNavClassName({ isActive }: { isActive: boolean }) {
 	return cn(
@@ -18,6 +19,8 @@ type ShellHeaderProps = {
 };
 
 export function ShellHeader({ onMenuOpen }: ShellHeaderProps) {
+	const { openCompose } = useCompose();
+
 	return (
 		<header className="fixed inset-x-0 top-0 z-40 border-b border-border-subtle bg-surface/90 shadow-[0_1px_12px_rgba(0,0,0,0.5)] backdrop-blur-xl">
 			<div className="flex h-16 items-center justify-between px-[var(--spacing-gutter-mobile)] md:px-[var(--spacing-gutter-tablet)] lg:px-[var(--spacing-gutter-desktop)]">
@@ -64,7 +67,16 @@ export function ShellHeader({ onMenuOpen }: ShellHeaderProps) {
 					))}
 				</nav>
 
-				<div className="flex shrink-0 items-center gap-2 sm:gap-4">
+				<div className="flex shrink-0 items-center gap-2 sm:gap-3">
+					<button
+						type="button"
+						className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-primary px-3 text-label-md font-bold text-on-primary shadow-[0_4px_16px_rgb(94_224_181_/_0.22)] transition-colors hover:bg-primary-hover sm:px-4"
+						aria-label="New Post"
+						onClick={openCompose}
+					>
+						<IconAdd className="size-[18px] shrink-0" />
+						<span className="hidden sm:inline">New Post</span>
+					</button>
 					<label className="relative hidden items-center sm:flex">
 						<span className="sr-only">Search</span>
 						<IconSearch className="absolute left-3 size-[18px] text-text-faint" />

@@ -11,7 +11,9 @@ describe('AppRouter', () => {
 
 		expect(screen.getByRole('heading', { name: /^feed$/i })).toBeInTheDocument();
 		expect(screen.getByRole('tablist', { name: /feed perspective/i })).toBeInTheDocument();
-		expect(screen.getByLabelText(/create post/i)).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: /^new post$/i })).toBeInTheDocument();
+		expect(screen.getByLabelText(/search feed/i)).toBeInTheDocument();
+		expect(screen.queryByLabelText(/create post/i)).not.toBeInTheDocument();
 		expect(screen.getByText(/aetheria: chrono echoes/i)).toBeInTheDocument();
 
 		expect(screen.getByLabelText('Open navigation menu')).toBeInTheDocument();
