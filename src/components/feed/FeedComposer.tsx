@@ -90,7 +90,7 @@ export function FeedComposer({ currentUser }: FeedComposerProps) {
 				</label>
 			</div>
 
-			<div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-border-subtle/50 pt-2">
+			<div className="mt-3 flex flex-col gap-4 border-t border-border-subtle/50 pt-2 lg:flex-row lg:items-center lg:justify-between lg:gap-3">
 				<div className="flex flex-wrap items-center gap-1.5">
 					<button
 						type="button"
@@ -118,7 +118,7 @@ export function FeedComposer({ currentUser }: FeedComposerProps) {
 					</button>
 				</div>
 
-				<div className="flex items-center gap-4">
+				<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 					<label className="flex cursor-pointer select-none items-center gap-1.5 text-[12px] text-text-muted hover:text-text-secondary">
 						<input
 							type="checkbox"

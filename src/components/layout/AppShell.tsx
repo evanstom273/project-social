@@ -1,9 +1,9 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 
-import { DesktopNavRail } from '@/components/layout/DesktopNavRail';
-import { MobileBottomNav } from '@/components/layout/MobileBottomNav';
-import { TopHeader } from '@/components/layout/TopHeader';
-import { Container } from '@/components/ui/Container';
+import { ShellDiscoveryRail } from '@/components/layout/ShellDiscoveryRail';
+import { ShellHeader } from '@/components/layout/ShellHeader';
+import { ShellMobileDrawer } from '@/components/layout/ShellMobileDrawer';
+import { ShellSidebar } from '@/components/layout/ShellSidebar';
 
 type AppShellProps = {
 	children: ReactNode;
@@ -11,28 +11,21 @@ type AppShellProps = {
 };
 
 export function AppShell({ children, rightRail }: AppShellProps) {
+	const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
 	return (
-		<div className="min-h-dvh bg-background">
-			<TopHeader />
+		<div className="min-h-dvh bg-background text-text-primary">
+			<ShellHeader onMenuOpen={() => setMobileNavOpen(true)} />
+			<ShellMobileDrawer
+				open={mobileNavOpen}
+				onClose={() => setMobileNavOpen(false)}
+			/>
+			<ShellSidebar />
+			{rightRail ? <ShellDiscoveryRail>{rightRail}</ShellDiscoveryRail> : null}
 
-			<Container className="flex min-h-[calc(100dvh-4rem)] gap-0 lg:gap-6 xl:gap-8">
-				<DesktopNavRail />
-
-				<div className="flex min-w-0 flex-1 flex-col pb-24 lg:pb-8">
-					<main className="gutter-x flex-1 py-4 lg:py-6">{children}</main>
-				</div>
-
-				{rightRail ? (
-					<aside
-						className="hidden w-80 shrink-0 border-l border-border-subtle py-6 pr-[var(--spacing-gutter-desktop)] xl:block"
-						aria-label="Discovery"
-					>
-						{rightRail}
-					</aside>
-				) : null}
-			</Container>
-
-			<MobileBottomNav />
+			<div className="md:pl-64 xl:pr-80">
+				<main className="min-h-dvh pt-16">{children}</main>
+			</div>
 		</div>
 	);
 }

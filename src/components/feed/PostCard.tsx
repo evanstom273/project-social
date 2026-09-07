@@ -281,8 +281,8 @@ function PostActions({ post }: { post: FeedPost }) {
 
 export function PostCard({ post }: PostCardProps) {
 	return (
-		<article className="rounded-xl border border-border-subtle bg-surface-raised p-4 shadow-md transition-all duration-150 hover:border-border-default">
-			<div className="mb-3 flex items-start justify-between gap-3">
+		<article className="rounded-xl border border-border-subtle bg-surface-raised p-4 shadow-md transition-all duration-150 hover:border-border-default md:p-4">
+			<div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
 				<div className="flex min-w-0 items-start gap-3">
 					<ProjectAvatar
 						initial={post.project.initial}
@@ -316,7 +316,7 @@ export function PostCard({ post }: PostCardProps) {
 						</div>
 					</div>
 				</div>
-				<div className="flex shrink-0 items-center gap-2">
+				<div className="flex flex-wrap items-center gap-2 sm:shrink-0">
 					<PostTypeBadge post={post} />
 					<FollowProjectButton />
 				</div>

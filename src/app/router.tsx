@@ -1,10 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
 
 import { AppShell } from '@/components/layout/AppShell';
+import { FeedDiscoveryRail } from '@/components/feed/FeedDiscoveryRail';
 import { CommunitiesPage } from '@/features/communities/CommunitiesPage';
 import { CreatePage } from '@/features/create/CreatePage';
 import { ExplorePage } from '@/features/explore/ExplorePage';
-import { HomeDiscoveryRail, HomePage } from '@/features/home/HomePage';
+import { HomePage } from '@/features/home/HomePage';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { ProfilePage } from '@/features/profile/ProfilePage';
 import { ProjectsPage } from '@/features/projects/ProjectsPage';
@@ -13,7 +14,7 @@ import { SignupPage } from '@/features/auth/SignupPage';
 
 function ShellLayout() {
 	return (
-		<AppShell rightRail={<HomeDiscoveryRail />}>
+		<AppShell rightRail={<FeedDiscoveryRail />}>
 			<Routes>
 				<Route path="/" element={<HomePage />} />
 				<Route path="/explore" element={<ExplorePage />} />

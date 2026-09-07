@@ -3,9 +3,7 @@ import { useMemo, useState } from 'react';
 import type { MediaFilter, PostType } from '@/domain/feed-types';
 import type { FeedFilterMode, FeedSortMode } from '@/domain/types';
 import { listMockFeedPosts, MOCK_CURRENT_USER } from '@/data/feed-mock';
-import { Container } from '@/components/ui/Container';
 import { FeedComposer } from '@/components/feed/FeedComposer';
-import { FeedDiscoveryRail } from '@/components/feed/FeedDiscoveryRail';
 import { FeedFilters } from '@/components/feed/FeedFilters';
 import { FeedHeader } from '@/components/feed/FeedHeader';
 import { PostCard } from '@/components/feed/PostCard';
@@ -56,7 +54,7 @@ export function HomePage() {
 	);
 
 	return (
-		<Container width="feed">
+		<div className="mx-auto w-full max-w-[var(--spacing-feed-max)] px-[var(--spacing-gutter-mobile)] py-6 md:px-[var(--spacing-gutter-tablet)] lg:px-[var(--spacing-gutter-desktop)] lg:py-8">
 			<FeedHeader
 				filterMode={filterMode}
 				sortMode={sortMode}
@@ -78,7 +76,7 @@ export function HomePage() {
 				<FeedComposer currentUser={MOCK_CURRENT_USER} />
 			</div>
 
-			<div className="flex flex-col gap-6">
+			<div className="mt-6 flex flex-col gap-6">
 				{posts.map((post) => (
 					<PostCard key={post.id} post={post} />
 				))}
@@ -94,10 +92,6 @@ export function HomePage() {
 					<p className="text-body-sm">You are all caught up!</p>
 				</div>
 			)}
-		</Container>
+		</div>
 	);
-}
-
-export function HomeDiscoveryRail() {
-	return <FeedDiscoveryRail />;
 }
