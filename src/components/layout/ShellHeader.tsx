@@ -24,7 +24,7 @@ export function ShellHeader({ onMenuOpen }: ShellHeaderProps) {
 				<div className="flex min-w-0 items-center gap-3">
 					<button
 						type="button"
-						className="flex size-10 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary md:hidden"
+						className="flex size-10 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary lg:hidden"
 						aria-label="Open navigation menu"
 						onClick={onMenuOpen}
 					>

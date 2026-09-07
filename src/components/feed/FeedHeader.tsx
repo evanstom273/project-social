@@ -24,7 +24,7 @@ export function FeedHeader({
 }: FeedHeaderProps) {
 	return (
 		<div className="mb-6 flex flex-col gap-4">
-			<div className="flex flex-wrap items-center justify-between gap-3">
+			<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div className="flex flex-wrap items-center gap-3">
 					<Text as="h1" variant="headline-lg">
 						Feed
@@ -46,7 +46,7 @@ export function FeedHeader({
 				</div>
 
 				<div
-					className="flex items-center rounded-xl border border-border-subtle bg-surface p-1 shadow-sm"
+					className="flex w-full items-center rounded-xl border border-border-subtle bg-surface p-1 shadow-sm sm:w-auto"
 					role="tablist"
 					aria-label="Feed perspective"
 				>

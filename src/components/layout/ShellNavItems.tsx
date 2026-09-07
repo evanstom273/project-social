@@ -37,7 +37,7 @@ type ShellNavItemsProps = {
 
 export function ShellNavItems({ onNavigate }: ShellNavItemsProps) {
 	return (
-		<>
+		<div className="flex flex-col gap-6">
 			<nav className="flex flex-col gap-1" aria-label="Main navigation">
 				{SHELL_SIDEBAR_NAV_ITEMS.map((item) => {
 					const Icon = NAV_ICONS[item.icon];
@@ -64,7 +64,7 @@ export function ShellNavItems({ onNavigate }: ShellNavItemsProps) {
 				<IconAdd className="size-5" />
 				New Update
 			</NavLink>
-		</>
+		</div>
 	);
 }
 
