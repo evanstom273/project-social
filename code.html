@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;750&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .code-scroll::-webkit-scrollbar { display: block; height: 6px; }
+    .code-scroll::-webkit-scrollbar-thumb { background: rgba(214, 196, 175, 0.22); border-radius: 9999px; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-overlay": "#24211D",
+            "border-strong": "rgba(214, 196, 175, 0.22)",
+            "on-tertiary-container": "#7c4900",
+            "on-primary-fixed-variant": "#452600",
+            "on-error": "#690005",
+            "tertiary-fixed-dim": "#FB923C",
+            "on-primary": "#181105",
+            "secondary-fixed": "#bae6fd",
+            "outline-variant": "#443b32",
+            "accent-rose": "#FB7185",
+            "surface-hover": "#2A2621",
+            "error-container": "#93000a",
+            "inverse-on-surface": "#2A2621",
+            "surface-subtle": "#171512",
+            "tertiary-container": "#7c2d12",
+            "on-primary-container": "#452600",
+            "surface-container-high": "#28241F",
+            "on-tertiary": "#492900",
+            "border-subtle": "rgba(214, 196, 175, 0.12)",
+            "on-secondary-container": "#bae6fd",
+            "on-surface-variant": "#c4baa9",
+            "surface-tint": "#F59E0B",
+            "primary-fixed-dim": "#FBBF24",
+            "on-tertiary-fixed-variant": "#683d00",
+            "tertiary-fixed": "#fed7aa",
+            "surface-container": "#1C1A17",
+            "on-secondary-fixed": "#0c2838",
+            "surface": "#151412",
+            "secondary-fixed-dim": "#38BDF8",
+            "on-surface": "#F7F4EE",
+            "surface-dim": "#0D0C0A",
+            "text-faint": "#7E7569",
+            "surface-container-highest": "#332E27",
+            "surface-raised": "#1E1B17",
+            "surface-bright": "#3B352D",
+            "primary-muted": "rgba(245, 158, 11, 0.14)",
+            "border-default": "rgba(214, 196, 175, 0.16)",
+            "scrim": "rgba(8, 7, 6, 0.82)",
+            "secondary-container": "#164e63",
+            "text-primary": "#F7F4EE",
+            "primary": "#FBBF24",
+            "tertiary": "#fed7aa",
+            "primary-container": "#F59E0B",
+            "on-primary-fixed": "#181105",
+            "surface-variant": "#2E2A24",
+            "outline": "#9E9589",
+            "on-background": "#F7F4EE",
+            "surface-container-low": "#131210",
+            "border-focus": "rgba(245, 158, 11, 0.70)",
+            "primary-hover": "#FBBF24",
+            "on-secondary-fixed-variant": "#075985",
+            "primary-fixed": "#FDE68A",
+            "secondary-muted": "rgba(56, 189, 248, 0.14)",
+            "surface-container-lowest": "#0D0C0A",
+            "error": "#FF7B7B",
+            "warning": "#F5C76B",
+            "on-tertiary-fixed": "#2c1700",
+            "text-secondary": "#D4CEC3",
+            "secondary": "#38BDF8",
+            "background": "#0D0C0A",
+            "inverse-primary": "#92400E",
+            "text-muted": "#9E9589",
+            "inverse-surface": "#F7F4EE",
+            "on-secondary": "#0c2838",
+            "on-error-container": "#ffdad6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-desktop": "1.5rem",
+            "space-2xl": "3rem",
+            "space-2xs": "0.25rem",
+            "space-md": "1rem",
+            "space-xs": "0.5rem",
+            "space-xl": "2rem",
+            "space-3xl": "4rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "0.875rem",
+            "space-sm": "0.75rem",
+            "feed-max": "44rem",
+            "gutter-tablet": "1.25rem",
+            "content-max": "80rem"
+          },
+          "fontFamily": {
+            "sans": ["Inter", "sans-serif"],
+            "headline-lg": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "headline-sm": ["Inter", "sans-serif"],
+            "caption": ["Inter", "sans-serif"],
+            "display-lg": ["Inter", "sans-serif"],
+            "display-sm": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.025em", "fontWeight": "700"}],
+            "label-sm": ["12px", {"lineHeight": "15px", "letterSpacing": "0.025em", "fontWeight": "650"}],
+            "body-lg": ["17px", {"lineHeight": "27px", "letterSpacing": "-0.005em", "fontWeight": "400"}],
+            "headline-md": ["22px", {"lineHeight": "29px", "letterSpacing": "-0.018em", "fontWeight": "650"}],
+            "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "-0.012em", "fontWeight": "650"}],
+            "caption": ["12px", {"lineHeight": "17px", "letterSpacing": "0.005em", "fontWeight": "400"}],
+            "display-lg": ["48px", {"lineHeight": "52px", "letterSpacing": "-0.035em", "fontWeight": "750"}],
+            "display-sm": ["36px", {"lineHeight": "40px", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+            "body-md": ["15px", {"lineHeight": "23px", "letterSpacing": "0", "fontWeight": "400"}],
+            "body-sm": ["13px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+            "label-md": ["14px", {"lineHeight": "17px", "letterSpacing": "0.005em", "fontWeight": "600"}]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface-container-lowest font-body-md text-body-md text-text-primary min-h-screen antialiased selection:bg-primary selection:text-on-primary">
+<!-- Fixed Top Header -->
+<header class="fixed top-0 left-0 right-0 z-40 bg-surface/90 backdrop-blur-xl border-b border-border-subtle shadow-[0_1px_12px_rgba(0,0,0,0.5)]">
+<div class="h-16 w-full px-gutter-desktop flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<a class="flex items-center gap-space-sm group" href="#">
+<div class="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0">
+            https://lh3.googleusercontent.com/aida/AEtjO1V8ptHr4ey_nziR6r7nLrqjWydnhrWbytxUUvXxcNOzM9Jpf7N-Ban-Ytz0qHIr2i49NUkC4PQw-xixf58u4Wii8HGvP5HtosIDIRSU8uQ26Sr6538FNIJzmpC5TIeHVmX0m9K_UggW8OFAixxMKK8cunrVQCXUAwH8yDdb5eHt5CqojuO2AKOYOgTh6gZsu0wn3tnz1d2ZY1CvCe_gAuDYn9ibyUkmLUefgz2Dnnt9GG4ZCT7XnK329nw
+          </div>
+<span class="font-headline-sm text-headline-sm text-text-primary tracking-tight font-bold group-hover:text-primary transition-colors">Project Social</span>
+</a>
+</div>
+<nav class="hidden lg:flex items-center gap-space-xl" data-active-classes="text-primary font-label-md text-label-md">
+<a aria-current="page" class="transition-colors text-primary font-label-md text-label-md flex items-center gap-1.5" data-path="home" href="#">
+<span>Home</span>
+</a>
+<a class="font-label-md text-label-md text-text-muted hover:text-text-primary transition-colors" data-path="explore" href="#">Explore</a>
+<a class="font-label-md text-label-md text-text-muted hover:text-text-primary transition-colors" data-path="communities" href="#">Communities</a>
+<a class="font-label-md text-label-md text-text-muted hover:text-text-primary transition-colors" data-path="projects" href="#">Projects</a>
+<a class="font-label-md text-label-md text-text-muted hover:text-text-primary transition-colors" data-path="saved" href="#">Saved</a>
+</nav>
+<div class="flex items-center gap-space-md">
+<div class="relative hidden sm:flex items-center">
+<span class="material-symbols-outlined absolute left-space-sm text-text-faint text-[18px]">search</span>
+<input class="h-9 pl-9 pr-space-md bg-surface-subtle border border-border-subtle hover:border-border-default rounded-xl text-body-sm font-body-sm text-text-primary placeholder:text-text-faint focus:outline-none focus:border-primary transition-colors w-64" placeholder="Search craft, projects, tags..." type="text"/>
+</div>
+<button class="w-9 h-9 rounded-xl bg-surface-raised border border-border-subtle flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-surface-hover transition-colors" title="Notifications">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<div class="relative group cursor-pointer">
+<img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-border-default" src="https://lh3.googleusercontent.com/aida/AEtjO1UJq-HxrJg4iPBlsFjku1eX69qe3U2R0aH4Cxtzjh83uXQWfsZe6dn0cHOSmy7GcQ8IRHgTi2xNU69MhMh2a4XVu1vnkHT4BfFrY0hHQgquUL1cyc8gia-hF3zWsPgumvWh5uMhmASJvjs8R1h96tNX3Ohu6QXKKwctjUrqUsO95tO9Dx4B_XuMvnWe0BMAMNBo8wO_agTwHvT91SlmVUTlSuDXkme7c-PNqeVoTZb4ry12AVZCHlNXSlDj"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Left Navigation Bar -->
+<aside class="fixed left-0 top-16 bottom-0 w-64 bg-surface z-30 hidden md:flex flex-col justify-between p-space-lg border-r border-border-subtle shadow-[1px_0_12px_rgba(0,0,0,0.35)]">
+<div class="flex flex-col gap-space-lg">
+<nav class="flex flex-col gap-1">
+<!-- Home (Active) -->
+<a aria-current="page" class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl transition-all bg-primary-muted text-primary font-label-md" data-path="home" href="#">
+<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Home Feed</span>
+</a>
+<!-- Explore -->
+<a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-label-md text-label-md text-text-muted hover:bg-surface-hover hover:text-text-primary transition-all" data-path="explore" href="#">
+<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9 9l6 6m0-6l-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Explore Crafts</span>
+</a>
+<!-- Communities -->
+<a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-label-md text-label-md text-text-muted hover:bg-surface-hover hover:text-text-primary transition-all" data-path="communities" href="#">
+<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Communities</span>
+</a>
+<!-- Projects -->
+<a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-label-md text-label-md text-text-muted hover:bg-surface-hover hover:text-text-primary transition-all" data-path="projects" href="#">
+<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>My Projects</span>
+</a>
+<!-- Saved -->
+<a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl font-label-md text-label-md text-text-muted hover:bg-surface-hover hover:text-text-primary transition-all" data-path="saved" href="#">
+<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Saved Items</span>
+</a>
+</nav>
+<!-- Primary Action CTA -->
+<button class="w-full h-11 bg-primary text-[#181105] hover:bg-primary-hover font-label-md text-label-md rounded-lg flex items-center justify-center gap-space-xs font-bold transition-all shadow-[0_4px_16px_rgba(245,158,11,0.22)]">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>New Update</span>
+</button>
+</div>
+<!-- User Profile Footer -->
+<div class="bg-surface-raised border border-border-subtle rounded-xl p-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<img alt="Elena Rostova" class="w-9 h-9 rounded-full object-cover ring-1 ring-border-default flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1UJq-HxrJg4iPBlsFjku1eX69qe3U2R0aH4Cxtzjh83uXQWfsZe6dn0cHOSmy7GcQ8IRHgTi2xNU69MhMh2a4XVu1vnkHT4BfFrY0hHQgquUL1cyc8gia-hF3zWsPgumvWh5uMhmASJvjs8R1h96tNX3Ohu6QXKKwctjUrqUsO95tO9Dx4B_XuMvnWe0BMAMNBo8wO_agTwHvT91SlmVUTlSuDXkme7c-PNqeVoTZb4ry12AVZCHlNXSlDj"/>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-text-primary truncate font-medium">Elena Rostova</p>
+<p class="font-caption text-caption text-text-muted truncate">@elena_crafts</p>
+</div>
+</div>
+<button class="text-text-faint hover:text-text-primary transition-colors p-1" title="Account settings">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</aside>
+<!-- Right Discovery Rail -->
+<aside class="fixed right-0 top-16 bottom-0 w-80 bg-surface z-30 hidden xl:flex flex-col justify-between p-space-lg overflow-y-auto border-l border-border-subtle shadow-[-1px_0_12px_rgba(0,0,0,0.35)]">
+<div class="flex flex-col gap-space-xl">
+<!-- Active Projects Section -->
+<div>
+<div class="flex items-center justify-between mb-1">
+<h2 class="font-label-md text-label-md text-text-primary font-bold tracking-tight uppercase">Active Projects</h2>
+<a class="font-caption text-caption text-text-faint hover:text-text-primary transition-colors" data-path="projects" href="#">View all</a>
+</div>
+<p class="font-caption text-caption text-text-faint mb-space-sm">Based on recent updates</p>
+<div class="flex flex-col gap-space-sm">
+<!-- Active Project 1 -->
+<div class="p-space-sm rounded-xl bg-surface-raised border border-border-subtle hover:border-border-default transition-all flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-lg bg-surface-overlay border border-border-subtle flex items-center justify-center font-headline-sm text-primary font-bold flex-shrink-0">
+                A
+              </div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-text-primary font-medium truncate leading-tight">Aetheria RPG</p>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="font-caption text-caption text-tertiary-fixed-dim bg-tertiary-container/40 px-1.5 py-0.5 rounded text-[11px]">Indie Game</span>
+<span class="text-caption text-caption text-text-faint">1.2k followers</span>
+</div>
+</div>
+</div>
+<button class="h-7 px-2.5 rounded-full border border-border-default hover:border-primary hover:text-primary text-caption font-caption text-text-secondary transition-colors flex-shrink-0 font-medium">
+              + Follow
+            </button>
+</div>
+<!-- Active Project 2 -->
+<div class="p-space-sm rounded-xl bg-surface-raised border border-border-subtle hover:border-border-default transition-all flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-lg bg-surface-overlay border border-border-subtle flex items-center justify-center font-headline-sm text-secondary font-bold flex-shrink-0">
+                L
+              </div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-text-primary font-medium truncate leading-tight">Lumina Tracker</p>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="font-caption text-caption text-secondary-fixed bg-secondary-container/50 px-1.5 py-0.5 rounded text-[11px]">Hardware</span>
+<span class="text-caption text-caption text-text-faint">780 followers</span>
+</div>
+</div>
+</div>
+<button class="h-7 px-2.5 rounded-full border border-border-default hover:border-primary hover:text-primary text-caption font-caption text-text-secondary transition-colors flex-shrink-0 font-medium">
+              + Follow
+            </button>
+</div>
+<!-- Active Project 3 -->
+<div class="p-space-sm rounded-xl bg-surface-raised border border-border-subtle hover:border-border-default transition-all flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-lg bg-surface-overlay border border-border-subtle flex items-center justify-center font-headline-sm text-accent-rose font-bold flex-shrink-0">
+                M
+              </div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-text-primary font-medium truncate leading-tight">MeshTools</p>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="font-caption text-caption text-primary bg-primary-muted px-1.5 py-0.5 rounded text-[11px]">Blender Tool</span>
+<span class="text-caption text-caption text-text-faint">2.4k followers</span>
+</div>
+</div>
+</div>
+<button class="h-7 px-2.5 rounded-full border border-border-default hover:border-primary hover:text-primary text-caption font-caption text-text-secondary transition-colors flex-shrink-0 font-medium">
+              + Follow
+            </button>
+</div>
+</div>
+</div>
+<!-- Recently Active / New & Noticed -->
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<h2 class="font-label-md text-label-md text-text-primary font-bold tracking-tight uppercase">New &amp; Noticed</h2>
+<span class="font-caption text-caption text-text-faint">Recent launches</span>
+</div>
+<div class="flex flex-col gap-space-sm">
+<div class="p-space-sm rounded-xl bg-surface-subtle border border-border-subtle flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-overlay flex items-center justify-center text-secondary font-bold text-body-sm">C</div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-text-primary truncate">ChronoSynth Eurorack</p>
+<p class="font-caption text-caption text-text-muted truncate">Modular Analog Synthesizer</p>
+</div>
+</div>
+<button class="h-6 px-2 rounded-full border border-border-default hover:border-primary hover:text-primary text-caption font-caption text-text-secondary transition-colors">
+              + Follow
+            </button>
+</div>
+<div class="p-space-sm rounded-xl bg-surface-subtle border border-border-subtle flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-overlay flex items-center justify-center text-primary font-bold text-body-sm">P</div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-text-primary truncate">PebbleOS</p>
+<p class="font-caption text-caption text-text-muted truncate">Minimalist E-Ink Firmware</p>
+</div>
+</div>
+<button class="h-6 px-2 rounded-full border border-border-default hover:border-primary hover:text-primary text-caption font-caption text-text-secondary transition-colors">
+              + Follow
+            </button>
+</div>
+</div>
+</div>
+<!-- Active Communities Section -->
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<h2 class="font-label-md text-label-md text-text-primary font-bold tracking-tight uppercase">Active Communities</h2>
+<a class="font-caption text-caption text-text-faint hover:text-text-primary transition-colors" data-path="communities" href="#">Explore</a>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between py-1.5">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-text-faint font-mono">#</span>
+<span class="font-label-md text-label-md text-text-secondary">IndieDev</span>
+</div>
+<button class="h-6 px-2.5 rounded-full bg-surface-subtle hover:bg-primary hover:text-on-primary font-label-sm text-[11px] text-text-secondary transition-colors">Join</button>
+</div>
+<div class="flex items-center justify-between py-1.5">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-text-faint font-mono">#</span>
+<span class="font-label-md text-label-md text-text-secondary">BlenderArt</span>
+</div>
+<button class="h-6 px-2.5 rounded-full bg-surface-subtle hover:bg-primary hover:text-on-primary font-label-sm text-[11px] text-text-secondary transition-colors">Join</button>
+</div>
+<div class="flex items-center justify-between py-1.5">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-text-faint font-mono">#</span>
+<span class="font-label-md text-label-md text-text-secondary">HardwareHacks</span>
+</div>
+<button class="h-6 px-2.5 rounded-full bg-surface-subtle hover:bg-primary hover:text-on-primary font-label-sm text-[11px] text-text-secondary transition-colors">Join</button>
+</div>
+<div class="flex items-center justify-between py-1.5">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-text-faint font-mono">#</span>
+<span class="font-label-md text-label-md text-text-secondary">Woodworking</span>
+</div>
+<button class="h-6 px-2.5 rounded-full bg-surface-subtle hover:bg-primary hover:text-on-primary font-label-sm text-[11px] text-text-secondary transition-colors">Join</button>
+</div>
+<div class="flex items-center justify-between py-1.5">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-text-faint font-mono">#</span>
+<span class="font-label-md text-label-md text-text-secondary">Synthesizers</span>
+</div>
+<button class="h-6 px-2.5 rounded-full bg-surface-subtle hover:bg-primary hover:text-on-primary font-label-sm text-[11px] text-text-secondary transition-colors">Join</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Discovery Rail Footer -->
+<footer class="pt-space-lg flex flex-col gap-space-xs text-caption font-caption text-text-faint border-t border-border-subtle mt-space-lg">
+<div class="flex flex-wrap gap-x-space-sm gap-y-1">
+<a class="hover:text-text-muted transition-colors" href="#">About</a>
+<a class="hover:text-text-muted transition-colors" href="#">Guidelines</a>
+<a class="hover:text-text-muted transition-colors" href="#">Privacy</a>
+<a class="hover:text-text-muted transition-colors" href="#">API</a>
+<a class="hover:text-text-muted transition-colors" href="#">Manifesto</a>
+</div>
+<p class="text-[11px] text-text-faint leading-relaxed mt-1">
+        Project Social is chronological by default. Feeds are never algorithmically re-ordered.
+      </p>
+<p class="text-[11px] text-text-faint">© 2024 Project Social Studio</p>
+</footer>
+</aside>
+<!-- Main Feed Container -->
+<div class="md:pl-64 xl:pr-80">
+<main class="relative pt-16 min-h-screen bg-surface-container-lowest">
+<div class="max-w-feed-max mx-auto px-gutter-mobile sm:px-gutter-tablet lg:px-gutter-desktop py-space-lg">
+<div class="flex flex-col w-full">
+<!-- 2. Feed Header & Perspective Switcher -->
+<div class="flex flex-col gap-space-md mb-space-lg">
+<!-- Top Row: Stream Identity + Transparent Ordering Badge + Feed Mode Switcher -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm flex-wrap">
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight font-bold">Feed</h1>
+<!-- Transparent Chronological Ordering Badge with Tooltip Indicator -->
+<div class="group relative flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-border-subtle text-caption font-caption text-text-secondary cursor-help">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-medium">Chronological · Newest First</span>
+<span class="material-symbols-outlined text-[14px] text-text-faint">info</span>
+<!-- Tooltip -->
+<div class="absolute left-0 bottom-full mb-2 hidden group-hover:block z-50 w-64 p-2.5 rounded-lg bg-surface-overlay border border-border-strong text-caption text-text-secondary shadow-2xl">
+                    Strict time-ordered stream. Likes and engagement never promote, demote, or re-order posts in your feed.
+                  </div>
+</div>
+</div>
+<!-- Segmented Tabs: Everything / Following -->
+<div class="flex items-center p-1 rounded-xl bg-surface border border-border-subtle shadow-sm">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-raised text-primary font-label-md text-label-md transition-all font-semibold" id="tab-everything" onclick="switchStreamTab('everything')">
+                  Everything
+                </button>
+<button class="px-space-md py-1.5 rounded-lg text-text-muted hover:text-text-primary font-label-md text-label-md transition-all" id="tab-following" onclick="switchStreamTab('following')">
+                  Following
+                </button>
+</div>
+</div>
+<!-- Feed Filter Controls: Separated conceptually -->
+<div class="flex flex-col gap-2.5 pt-1 border-t border-border-subtle/60">
+<!-- Row A: Media Filters -->
+<div class="flex items-center justify-between gap-2 overflow-x-auto pb-0.5 scrollbar-none">
+<div class="flex items-center gap-1.5">
+<span class="text-[11px] font-caption text-text-faint uppercase tracking-wider font-semibold mr-1">Media:</span>
+<button class="filter-media-btn active h-7 px-3 rounded-full bg-surface-raised border border-border-strong text-primary font-label-sm text-label-sm whitespace-nowrap transition-colors flex items-center gap-1">
+<span>All Media</span>
+</button>
+<button class="filter-media-btn h-7 px-3 rounded-full bg-surface border border-border-subtle hover:bg-surface-hover text-text-secondary font-label-sm text-label-sm whitespace-nowrap transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-text-faint">image</span>
+<span>Images &amp; Galleries</span>
+</button>
+<button class="filter-media-btn h-7 px-3 rounded-full bg-surface border border-border-subtle hover:bg-surface-hover text-text-secondary font-label-sm text-label-sm whitespace-nowrap transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-text-faint">videocam</span>
+<span>Video &amp; Clips (≤60s)</span>
+</button>
+<button class="filter-media-btn h-7 px-3 rounded-full bg-surface border border-border-subtle hover:bg-surface-hover text-text-secondary font-label-sm text-label-sm whitespace-nowrap transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-text-faint">code</span>
+<span>Code &amp; Text</span>
+</button>
+</div>
+<!-- Row C: Sort Selection Dropdown Control -->
+<div class="relative flex-shrink-0">
+<button class="h-7 px-3 rounded-full bg-surface border border-border-subtle hover:bg-surface-hover text-text-primary font-label-sm text-label-sm flex items-center gap-1.5 transition-colors" id="sort-trigger" onclick="toggleSortMenu()">
+<span class="material-symbols-outlined text-[16px] text-primary">swap_vert</span>
+<span id="current-sort-label">Newest First</span>
+<span class="material-symbols-outlined text-[14px] text-text-faint">expand_more</span>
+</button>
+<div class="hidden absolute right-0 mt-1.5 w-44 rounded-xl bg-surface-overlay border border-border-strong shadow-xl p-1 z-30 flex flex-col gap-0.5" id="sort-flyout">
+<button class="w-full text-left px-3 py-1.5 rounded-lg text-primary font-label-sm text-label-sm bg-primary-muted flex items-center justify-between" onclick="setSort('Newest First')">
+<span>Newest First</span>
+<span class="material-symbols-outlined text-[14px]">check</span>
+</button>
+<button class="w-full text-left px-3 py-1.5 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-hover font-label-sm text-label-sm" onclick="setSort('Recently Active')">
+<span>Recently Active</span>
+</button>
+<button class="w-full text-left px-3 py-1.5 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-hover font-label-sm text-label-sm" onclick="setSort('Most Discussed')">
+<span>Most Discussed</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Row B: Post Type Filters -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
+<span class="text-[11px] font-caption text-text-faint uppercase tracking-wider font-semibold mr-1">Post Type:</span>
+<button class="filter-type-btn active h-6 px-2.5 rounded-md bg-surface-raised border border-border-strong text-text-primary font-label-sm text-[12px] whitespace-nowrap">
+                  All Posts
+                </button>
+<button class="filter-type-btn h-6 px-2.5 rounded-md bg-surface border border-border-subtle hover:bg-surface-hover text-text-secondary font-label-sm text-[12px] whitespace-nowrap">
+                  Updates
+                </button>
+<button class="filter-type-btn h-6 px-2.5 rounded-md bg-surface border border-border-subtle hover:bg-surface-hover text-secondary font-label-sm text-[12px] whitespace-nowrap flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Questions</span>
+</button>
+<button class="filter-type-btn h-6 px-2.5 rounded-md bg-surface border border-border-subtle hover:bg-surface-hover text-primary font-label-sm text-[12px] whitespace-nowrap flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Resources</span>
+</button>
+<button class="filter-type-btn h-6 px-2.5 rounded-md bg-surface border border-border-subtle hover:bg-surface-hover text-tertiary-fixed-dim font-label-sm text-[12px] whitespace-nowrap flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed-dim"></span>
+<span>Milestones</span>
+</button>
+</div>
+<!-- Neutral Active Tags / Browse by Craft -->
+<div class="flex items-center gap-1.5 overflow-x-auto pt-1 text-caption font-caption text-text-faint">
+<span class="text-text-faint flex items-center gap-0.5 text-[11px]"><span class="material-symbols-outlined text-[13px]">label</span> Browse craft:</span>
+<button class="px-2 py-0.5 rounded-md bg-surface border border-border-subtle hover:border-border-default hover:text-text-primary transition-colors text-text-secondary font-label-sm text-[11px]">#GameDev</button>
+<button class="px-2 py-0.5 rounded-md bg-surface border border-border-subtle hover:border-border-default hover:text-text-primary transition-colors text-text-secondary font-label-sm text-[11px]">#Hardware</button>
+<button class="px-2 py-0.5 rounded-md bg-surface border border-border-subtle hover:border-border-default hover:text-text-primary transition-colors text-text-secondary font-label-sm text-[11px]">#AudioDSP</button>
+<button class="px-2 py-0.5 rounded-md bg-surface border border-border-subtle hover:border-border-default hover:text-text-primary transition-colors text-text-secondary font-label-sm text-[11px]">#Blender3D</button>
+<button class="px-2 py-0.5 rounded-md bg-surface border border-border-subtle hover:border-border-default hover:text-text-primary transition-colors text-text-secondary font-label-sm text-[11px]">#Woodworking</button>
+<button class="px-2 py-0.5 rounded-md bg-surface border border-border-subtle hover:border-border-default hover:text-text-primary transition-colors text-text-secondary font-label-sm text-[11px]">#CreativeWriting</button>
+<button class="px-2 py-0.5 rounded-md bg-surface border border-border-subtle hover:border-border-default hover:text-text-primary transition-colors text-text-secondary font-label-sm text-[11px]">#Tooling</button>
+</div>
+</div>
+</div>
+<!-- 4. Refined Inline Composer -->
+<div class="rounded-xl bg-surface border border-border-subtle p-space-md shadow-md mb-space-xl">
+<!-- Composer Header: Segmented Post Type Selector -->
+<div class="flex items-center justify-between gap-2 mb-space-sm pb-2 border-b border-border-subtle">
+<div class="flex items-center gap-1 bg-surface-subtle p-0.5 rounded-lg border border-border-subtle">
+<button class="px-2.5 py-1 rounded-md text-caption font-caption font-semibold bg-surface-raised text-text-primary shadow-sm" id="posttype-update" onclick="selectPostType('Update')">
+                  Update
+                </button>
+<button class="px-2.5 py-1 rounded-md text-caption font-caption text-text-muted hover:text-secondary transition-colors" id="posttype-question" onclick="selectPostType('Question')">
+                  Question
+                </button>
+<button class="px-2.5 py-1 rounded-md text-caption font-caption text-text-muted hover:text-primary transition-colors" id="posttype-resource" onclick="selectPostType('Resource')">
+                  Resource
+                </button>
+<button class="px-2.5 py-1 rounded-md text-caption font-caption text-text-muted hover:text-tertiary-fixed-dim transition-colors" id="posttype-milestone" onclick="selectPostType('Milestone')">
+                  Milestone
+                </button>
+</div>
+<span class="text-[11px] font-caption text-text-faint">Logged as @elena_crafts</span>
+</div>
+<!-- Composer Input Area -->
+<div class="flex items-start gap-space-sm">
+<img alt="Elena Rostova" class="w-9 h-9 rounded-full object-cover flex-shrink-0 ring-1 ring-border-default" src="https://lh3.googleusercontent.com/aida/AEtjO1UJq-HxrJg4iPBlsFjku1eX69qe3U2R0aH4Cxtzjh83uXQWfsZe6dn0cHOSmy7GcQ8IRHgTi2xNU69MhMh2a4XVu1vnkHT4BfFrY0hHQgquUL1cyc8gia-hF3zWsPgumvWh5uMhmASJvjs8R1h96tNX3Ohu6QXKKwctjUrqUsO95tO9Dx4B_XuMvnWe0BMAMNBo8wO_agTwHvT91SlmVUTlSuDXkme7c-PNqeVoTZb4ry12AVZCHlNXSlDj"/>
+<div class="flex-1 min-w-0">
+<textarea class="w-full bg-surface-subtle border border-border-subtle focus:border-border-default rounded-xl p-space-sm text-body-md font-body-md text-text-primary placeholder:text-text-faint focus:outline-none resize-none transition-all" id="composer-textarea" placeholder="What are you making or figuring out today? Share a devlog, ask a question, or post a resource..." rows="2"></textarea>
+</div>
+</div>
+<!-- Action Bar Controls -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm mt-space-sm pt-2 border-t border-border-subtle/50">
+<div class="flex flex-wrap items-center gap-1.5">
+<!-- Attach Media -->
+<button class="h-8 px-2.5 rounded-lg bg-surface-subtle border border-border-subtle hover:bg-surface-hover text-text-secondary hover:text-text-primary font-label-sm text-label-sm flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-primary">add_photo_alternate</span>
+<span>Attach Media</span>
+<span class="text-[10px] px-1 py-0.5 rounded bg-surface-raised text-text-faint">Max 60s video</span>
+</button>
+<!-- Link Project -->
+<div class="relative">
+<button class="h-8 px-2.5 rounded-lg bg-surface-subtle border border-border-subtle hover:bg-surface-hover text-text-secondary hover:text-text-primary font-label-sm text-label-sm flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-secondary">folder_special</span>
+<span>Link Project...</span>
+<span class="material-symbols-outlined text-[14px] text-text-faint">arrow_drop_down</span>
+</button>
+</div>
+<!-- Community -->
+<div class="relative">
+<button class="h-8 px-2.5 rounded-lg bg-surface-subtle border border-border-subtle hover:bg-surface-hover text-text-secondary hover:text-text-primary font-label-sm text-label-sm flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed-dim">group_add</span>
+<span>Share to community...</span>
+<span class="material-symbols-outlined text-[14px] text-text-faint">arrow_drop_down</span>
+</button>
+</div>
+</div>
+<!-- Right: AI-assisted toggle & Publish Button -->
+<div class="flex items-center gap-space-md">
+<!-- AI-assisted disclosure switch -->
+<label class="flex items-center gap-1.5 cursor-pointer text-caption font-caption text-text-muted hover:text-text-secondary select-none">
+<input class="w-3.5 h-3.5 rounded bg-surface-subtle border-border-strong text-primary focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-[12px]">Contains AI-assisted work</span>
+</label>
+<!-- Publish Update Button -->
+<button class="h-9 px-4 rounded-lg bg-primary text-[#181105] hover:bg-primary-hover font-label-md text-label-md font-bold flex items-center gap-1.5 shadow-sm transition-all duration-150 active:scale-95">
+<span>Publish Update</span>
+<span class="material-symbols-outlined text-[16px]">send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 3. Feed Timeline Stream with 4 Distinct Post Types -->
+<div class="flex flex-col gap-space-lg">
+<!-- POST 1: [Milestone] - Aetheria: Chrono Echoes -->
+<article class="rounded-xl bg-surface-raised border border-border-subtle p-space-md shadow-md hover:border-border-default transition-all duration-150">
+<!-- 1. Top Metadata Row: Strict Project -> Creator Hierarchy -->
+<div class="flex items-start justify-between gap-space-sm mb-space-sm">
+<div class="flex items-start gap-3 min-w-0">
+<!-- Project Rounded-Square Avatar: 36x36 with 8px radius -->
+<div class="w-9 h-9 rounded-lg bg-surface-overlay border border-border-subtle flex items-center justify-center font-headline-sm text-headline-sm font-bold text-primary flex-shrink-0 shadow-inner">
+                    A
+                  </div>
+<div class="min-w-0">
+<!-- Project Title & Tech Badge -->
+<div class="flex items-center gap-2 flex-wrap">
+<a class="font-headline-sm text-[16px] text-text-primary font-semibold hover:text-primary transition-colors truncate" href="#">
+                        Aetheria: Chrono Echoes
+                      </a>
+<span class="px-2 py-0.5 rounded bg-surface-subtle text-caption font-caption text-text-secondary border border-border-subtle/50">
+                        Game Dev · UE5
+                      </span>
+</div>
+<!-- Creator Attribution: Circular avatar + creator display name + handle + timestamp -->
+<div class="flex items-center gap-1.5 text-caption font-caption text-text-muted mt-0.5">
+<div class="w-5 h-5 rounded-full bg-surface-subtle overflow-hidden flex-shrink-0 border border-border-subtle flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px] text-text-secondary">person</span>
+</div>
+<span class="text-text-secondary font-medium">Kaelen Voss</span>
+<span class="text-text-faint">@kaelenv</span>
+<span class="w-1 h-1 rounded-full bg-text-faint"></span>
+<span class="text-text-faint">18m ago</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Milestone Semantic Badge & Follow Project Button -->
+<div class="flex items-center gap-2 flex-shrink-0">
+<div class="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-tertiary-container/50 border border-tertiary-fixed-dim/40 text-tertiary-fixed-dim text-caption font-caption font-semibold">
+<span class="material-symbols-outlined text-[14px]">flag</span>
+<span>Milestone: Alpha Combat</span>
+</div>
+<button class="h-7 px-2.5 rounded-full border border-border-default hover:border-primary hover:text-primary text-caption font-caption text-text-secondary transition-colors font-medium">
+                    + Follow
+                  </button>
+</div>
+</div>
+<!-- Post Body Content -->
+<div class="mb-space-md">
+<p class="font-body-md text-body-md text-text-primary leading-relaxed">
+                  Finally locked the directional parry system with custom hitstop timing and particle burst shaders. Running locked 60fps on our Steam Deck test target!
+                </p>
+</div>
+<!-- Media Viewport (Video Preview ≤60s) -->
+<div class="relative w-full aspect-video rounded-lg overflow-hidden bg-surface-subtle border border-border-subtle mb-space-md group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300" data-alt="Female warrior parrying a dark neon mechanical golem with mint cyan energy sword in Unreal Engine 5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnIZx_qhTGZ6edXwD-ypg-VcHSWQFlkxohTrcIdy4nv-eFvzP7E2B6jWR7OdLU4AtPRPPkahgw1IsIMjAIrziVRyOUDg7JW-y5gFqdTUt0i6ahNQVaAmNtmg7iI2LcTZKvM8359WuWPVqXsHLfLIbkDhNP3fmjmP31STaqcea8hGuSlCbGcCpRKObEVQbiGC_QRSxU9nFgDoI9zcOi1FXOcpRX-UI_IfcCwfqlBYBsI18eKkE_GKv28w"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim/80 via-transparent to-surface-dim/20"></div>
+<!-- Duration Badge -->
+<div class="absolute top-space-sm right-space-sm flex items-center gap-1 px-2 py-0.5 rounded-md bg-surface-dim/90 backdrop-blur-md text-caption font-caption text-text-primary font-medium border border-border-subtle">
+<span class="material-symbols-outlined text-[12px] text-primary">graphic_eq</span>
+<span>0:42</span>
+</div>
+<!-- Center Play Trigger -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-13 h-13 p-3 rounded-full bg-surface-dim/85 backdrop-blur-md text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary group-hover:scale-110 shadow-xl transition-all duration-200 border border-border-subtle">
+<span class="material-symbols-outlined text-[30px] ml-0.5">play_arrow</span>
+</div>
+</div>
+<!-- Bottom In-Clip Details -->
+<div class="absolute bottom-space-sm left-space-sm right-space-sm flex items-center justify-between text-caption font-caption text-text-muted">
+<span class="px-2 py-0.5 rounded bg-surface-overlay/85 text-text-primary font-mono text-[11px]">1080p60 · Steam Deck Profile v0.8.4</span>
+<span class="text-text-secondary text-[11px]">Unreal Engine 5.4</span>
+</div>
+</div>
+<!-- Craft Tags -->
+<div class="flex items-center gap-space-xs flex-wrap mb-space-sm">
+<a class="font-label-sm text-[12px] text-primary hover:underline" href="#">#GameDev</a>
+<a class="font-label-sm text-[12px] text-primary hover:underline" href="#">#CombatDesign</a>
+<a class="font-label-sm text-[12px] text-text-muted hover:text-text-primary" href="#">#UE5</a>
+<a class="font-label-sm text-[12px] text-text-muted hover:text-text-primary" href="#">#SteamDeck</a>
+</div>
+<!-- Low-Key Interaction Row: No engagement-farming cues -->
+<div class="flex items-center justify-between pt-2 border-t border-border-subtle/50 text-text-muted">
+<div class="flex items-center gap-space-md">
+<button class="flex items-center gap-1.5 hover:text-accent-rose transition-colors group" onclick="toggleSimpleLike(this)">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+<span class="font-label-sm text-[13px] text-text-secondary group-hover:text-accent-rose">142</span>
+</button>
+<button class="flex items-center gap-1.5 hover:text-secondary transition-colors group">
+<span class="material-symbols-outlined text-[18px]">chat_bubble</span>
+<span class="font-label-sm text-[13px] text-text-secondary group-hover:text-secondary">28</span>
+</button>
+<button class="flex items-center gap-1.5 hover:text-primary transition-colors text-text-muted">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+</div>
+<button class="text-text-faint hover:text-primary transition-colors" title="Save update">
+<span class="material-symbols-outlined text-[18px]">bookmark</span>
+</button>
+</div>
+</article>
+<!-- POST 2: [Question] - Lumina Tracker -->
+<article class="rounded-xl bg-surface-raised border border-border-subtle p-space-md shadow-md hover:border-border-default transition-all duration-150">
+<!-- Top Metadata Row -->
+<div class="flex items-start justify-between gap-space-sm mb-space-sm">
+<div class="flex items-start gap-3 min-w-0">
+<!-- Project Avatar: Rounded-Square -->
+<div class="w-9 h-9 rounded-lg bg-surface-overlay border border-border-subtle flex items-center justify-center font-headline-sm text-headline-sm font-bold text-secondary flex-shrink-0 shadow-inner">
+                    L
+                  </div>
+<div class="min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<a class="font-headline-sm text-[16px] text-text-primary font-semibold hover:text-primary transition-colors truncate" href="#">
+                        Lumina Tracker
+                      </a>
+<span class="px-2 py-0.5 rounded bg-surface-subtle text-caption font-caption text-text-secondary border border-border-subtle/50">
+                        Hardware · RP2040
+                      </span>
+</div>
+<!-- Creator Attribution -->
+<div class="flex items-center gap-1.5 text-caption font-caption text-text-muted mt-0.5">
+<div class="w-5 h-5 rounded-full bg-surface-subtle overflow-hidden flex-shrink-0 border border-border-subtle flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px] text-secondary">memory</span>
+</div>
+<span class="text-text-secondary font-medium">Marcus Vance</span>
+<span class="text-text-faint">@mvance_hw</span>
+<span class="w-1 h-1 rounded-full bg-text-faint"></span>
+<span class="text-text-faint">1h ago</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Question Badge & Follow Project Button -->
+<div class="flex items-center gap-2 flex-shrink-0">
+<div class="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-secondary-container/50 border border-secondary/40 text-secondary font-caption text-caption font-semibold">
+<span class="material-symbols-outlined text-[14px]">help_center</span>
+<span>Question · 4 Answers</span>
+</div>
+<button class="h-7 px-2.5 rounded-full border border-border-default hover:border-primary hover:text-primary text-caption font-caption text-text-secondary transition-colors font-medium">
+                    + Follow
+                  </button>
+</div>
+</div>
+<!-- Question Header & Text Body -->
+<div class="mb-space-md">
+<h3 class="font-headline-sm text-[16px] text-text-primary font-semibold mb-1">
+                  Why is the I2C bus locking up on warm boot with this IMU?
+                </h3>
+<p class="font-body-md text-body-md text-text-secondary leading-relaxed">
+                  We're interfacing an ICM-42688-P with an RP2040 over I2C at 400kHz. On a cold power cycle everything negotiates fine, but a software reset or warm reboot leaves SDA pulled low indefinitely until hard VBUS reset. 4.7kΩ pullups on 3.3V rail. Has anyone seen this clock-stretching lockup before?
+                </p>
+</div>
+<!-- Technical Embedded Diagram / Logic Analyzer Card -->
+<div class="rounded-lg bg-surface-container-lowest border border-border-subtle p-3 mb-space-md">
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-border-subtle text-caption font-mono text-text-faint">
+<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-secondary"></span> Logic Analyzer Trace (Saleae 24MHz)</span>
+<span>SCL: 400kHz · SDA: STUCK_LOW</span>
+</div>
+<!-- Logic Waveform Mockup -->
+<div class="relative h-16 w-full bg-surface-subtle rounded flex flex-col justify-around px-2 py-1 font-mono text-[11px]">
+<div class="flex items-center gap-2">
+<span class="text-secondary w-8 flex-shrink-0">SCL</span>
+<div class="flex-1 h-3 flex items-center">
+<div class="w-full h-0.5 bg-secondary/70 border-t border-b border-dashed border-secondary"></div>
+</div>
+<span class="text-text-faint text-[10px]">PULSING</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-error w-8 flex-shrink-0">SDA</span>
+<div class="flex-1 h-3 flex items-center">
+<div class="w-2/3 h-0.5 bg-error"></div>
+<div class="w-1/3 h-2 border-l border-b border-error text-[9px] text-error pl-1">HELD LOW BY SLAVE</div>
+</div>
+<span class="text-error text-[10px]">BUS_BUSY</span>
+</div>
+</div>
+<div class="mt-2 text-[11px] text-text-muted flex items-center justify-between">
+<span>Pin: GPIO4 (SDA), GPIO5 (SCL) · RP2040 Pico SDK 1.5</span>
+<span class="text-secondary hover:underline cursor-pointer flex items-center gap-0.5">
+<span>Inspect Schematics</span>
+<span class="material-symbols-outlined text-[13px]">open_in_new</span>
+</span>
+</div>
+</div>
+<!-- Tags -->
+<div class="flex items-center gap-space-xs flex-wrap mb-space-sm">
+<a class="font-label-sm text-[12px] text-secondary hover:underline" href="#">#Hardware</a>
+<a class="font-label-sm text-[12px] text-secondary hover:underline" href="#">#RP2040</a>
+<a class="font-label-sm text-[12px] text-text-muted hover:text-text-primary" href="#">#EmbeddedC</a>
+<a class="font-label-sm text-[12px] text-text-muted hover:text-text-primary" href="#">#I2C</a>
+</div>
+<!-- Low-Key Interaction Row -->
+<div class="flex items-center justify-between pt-2 border-t border-border-subtle/50 text-text-muted">
+<div class="flex items-center gap-space-md">
+<button class="flex items-center gap-1.5 hover:text-accent-rose transition-colors group" onclick="toggleSimpleLike(this)">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+<span class="font-label-sm text-[13px] text-text-secondary group-hover:text-accent-rose">47</span>
+</button>
+<button class="flex items-center gap-1.5 text-secondary hover:text-text-primary transition-colors group">
+<span class="material-symbols-outlined text-[18px]">chat_bubble</span>
+<span class="font-label-sm text-[13px] text-secondary font-medium">4 Answers</span>
+</button>
+<button class="flex items-center gap-1.5 hover:text-primary transition-colors text-text-muted">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+</div>
+<button class="text-text-faint hover:text-primary transition-colors" title="Save question">
+<span class="material-symbols-outlined text-[18px]">bookmark</span>
+</button>
+</div>
+</article>
+<!-- POST 3: [Resource] - MeshTools Toolkit -->
+<article class="rounded-xl bg-surface-raised border border-border-subtle p-space-md shadow-md hover:border-border-default transition-all duration-150">
+<!-- Top Metadata Row -->
+<div class="flex items-start justify-between gap-space-sm mb-space-sm">
+<div class="flex items-start gap-3 min-w-0">
+<!-- Project Avatar: Rounded-Square -->
+<div class="w-9 h-9 rounded-lg bg-surface-overlay border border-border-subtle flex items-center justify-center font-headline-sm text-headline-sm font-bold text-primary flex-shrink-0 shadow-inner">
+                    M
+                  </div>
+<div class="min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<a class="font-headline-sm text-[16px] text-text-primary font-semibold hover:text-primary transition-colors truncate" href="#">
+                        MeshTools Toolkit
+                      </a>
+<span class="px-2 py-0.5 rounded bg-surface-subtle text-caption font-caption text-text-secondary border border-border-subtle/50">
+                        Open Source · Blender Addon
+                      </span>
+</div>
+<!-- Creator Attribution -->
+<div class="flex items-center gap-1.5 text-caption font-caption text-text-muted mt-0.5">
+<div class="w-5 h-5 rounded-full bg-surface-subtle overflow-hidden flex-shrink-0 border border-border-subtle flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px] text-primary">terminal</span>
+</div>
+<span class="text-text-secondary font-medium">Soren Lind</span>
+<span class="text-text-faint">@soren_crafts</span>
+<span class="w-1 h-1 rounded-full bg-text-faint"></span>
+<span class="text-text-faint">3h ago</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Resource Badge & Follow Project Button -->
+<div class="flex items-center gap-2 flex-shrink-0">
+<div class="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-primary-muted border border-primary/40 text-primary text-caption font-caption font-semibold">
+<span class="material-symbols-outlined text-[14px]">download</span>
+<span>Free Resource · MIT</span>
+</div>
+<button class="h-7 px-2.5 rounded-full border border-border-default hover:border-primary hover:text-primary text-caption font-caption text-text-secondary transition-colors font-medium">
+                    + Follow
+                  </button>
+</div>
+</div>
+<!-- Body Text -->
+<div class="mb-space-md">
+<p class="font-body-md text-body-md text-text-primary leading-relaxed">
+                  Released a free dual-quaternion skinning weight transfer script for Blender 4.2+. Handles high-poly to low-poly deformation baking with volume preservation around joint twists without pinching.
+                </p>
+</div>
+<!-- Resource Card & Code Preview -->
+<div class="rounded-lg bg-surface-container-lowest border border-border-subtle p-3 mb-space-md flex flex-col gap-2.5">
+<div class="flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">folder_zip</span>
+<div>
+<p class="font-label-md text-label-md text-text-primary font-medium">meshtools_dq_transfer_v1.2.zip</p>
+<p class="font-caption text-caption text-text-muted">48 KB · Python 3.11 addon · MIT License</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<a class="h-7 px-3 rounded-lg bg-surface-subtle hover:bg-surface-hover border border-border-subtle text-caption font-caption text-text-secondary hover:text-text-primary flex items-center gap-1 transition-colors" href="#">
+<span class="material-symbols-outlined text-[14px]">code</span>
+<span>GitHub Repo</span>
+</a>
+<a class="h-7 px-3 rounded-lg bg-primary text-[#181105] hover:bg-primary-hover text-caption font-caption font-bold flex items-center gap-1 transition-colors" href="#">
+<span class="material-symbols-outlined text-[14px]">download</span>
+<span>Get Script</span>
+</a>
+</div>
+</div>
+<!-- Clean Python Code Snippet -->
+<div class="bg-surface-subtle border border-border-subtle p-2.5 rounded font-mono text-[12px] leading-relaxed text-text-secondary code-scroll overflow-x-auto">
+<span class="text-text-faint"># Dual-Quaternion Weight Transfer Operator</span><br/>
+<span class="text-secondary">import</span> bpy, bmesh<br/>
+<span class="text-secondary">def</span> <span class="text-primary">transfer_dq_weights</span>(source_obj, target_obj, epsilon=<span class="text-tertiary-fixed-dim">1e-5</span>):<br/>
+                    kd_tree = bmesh.ops.create_kd_tree(source_obj.data)<br/>
+                    <span class="text-accent-rose">return</span> [kd_tree.find_nearest(v.co) <span class="text-secondary">for</span> v <span class="text-secondary">in</span> target_obj.data.vertices]
+                </div>
+</div>
+<!-- Tags -->
+<div class="flex items-center gap-space-xs flex-wrap mb-space-sm">
+<a class="font-label-sm text-[12px] text-primary hover:underline" href="#">#Blender3D</a>
+<a class="font-label-sm text-[12px] text-primary hover:underline" href="#">#Python</a>
+<a class="font-label-sm text-[12px] text-text-muted hover:text-text-primary" href="#">#OpenSource</a>
+<a class="font-label-sm text-[12px] text-text-muted hover:text-text-primary" href="#">#Rigging</a>
+</div>
+<!-- Low-Key Interaction Row -->
+<div class="flex items-center justify-between pt-2 border-t border-border-subtle/50 text-text-muted">
+<div class="flex items-center gap-space-md">
+<button class="flex items-center gap-1.5 hover:text-accent-rose transition-colors group" onclick="toggleSimpleLike(this)">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+<span class="font-label-sm text-[13px] text-text-secondary group-hover:text-accent-rose">186</span>
+</button>
+<button class="flex items-center gap-1.5 hover:text-secondary transition-colors group">
+<span class="material-symbols-outlined text-[18px]">chat_bubble</span>
+<span class="font-label-sm text-[13px] text-text-secondary group-hover:text-secondary">19</span>
+</button>
+<button class="flex items-center gap-1.5 hover:text-primary transition-colors text-text-muted">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+</div>
+<button class="text-text-faint hover:text-primary transition-colors" title="Save resource">
+<span class="material-symbols-outlined text-[18px]">bookmark</span>
+</button>
+</div>
+</article>
+<!-- POST 4: [Update] - Atelier Noire -->
+<article class="rounded-xl bg-surface-raised border border-border-subtle p-space-md shadow-md hover:border-border-default transition-all duration-150">
+<!-- Top Metadata Row -->
+<div class="flex items-start justify-between gap-space-sm mb-space-sm">
+<div class="flex items-start gap-3 min-w-0">
+<!-- Project Avatar: Rounded-Square -->
+<div class="w-9 h-9 rounded-lg bg-surface-overlay border border-border-subtle flex items-center justify-center font-headline-sm text-headline-sm font-bold text-primary flex-shrink-0 shadow-inner">
+                    W
+                  </div>
+<div class="min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<a class="font-headline-sm text-[16px] text-text-primary font-semibold hover:text-primary transition-colors truncate" href="#">
+                        Atelier Noire
+                      </a>
+<span class="px-2 py-0.5 rounded bg-surface-subtle text-caption font-caption text-text-secondary border border-border-subtle/50">
+                        Craft &amp; Woodworking
+                      </span>
+</div>
+<!-- Creator Attribution -->
+<div class="flex items-center gap-1.5 text-caption font-caption text-text-muted mt-0.5">
+<div class="w-5 h-5 rounded-full bg-surface-subtle overflow-hidden flex-shrink-0 border border-border-subtle flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px] text-primary">handyman</span>
+</div>
+<span class="text-text-secondary font-medium">Soren Lind</span>
+<span class="text-text-faint">@soren_crafts</span>
+<span class="w-1 h-1 rounded-full bg-text-faint"></span>
+<span class="text-text-faint">5h ago</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Neutral Update Badge & Follow Project Button -->
+<div class="flex items-center gap-2 flex-shrink-0">
+<div class="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-surface-subtle border border-border-subtle text-caption font-caption text-text-secondary font-medium">
+<span>Update · Devlog #12</span>
+</div>
+<button class="h-7 px-2.5 rounded-full border border-border-default hover:border-primary hover:text-primary text-caption font-caption text-text-secondary transition-colors font-medium">
+                    + Follow
+                  </button>
+</div>
+</div>
+<!-- Body Text -->
+<div class="mb-space-md">
+<p class="font-body-md text-body-md text-text-primary leading-relaxed">
+                  Bookmatched English walnut slab flattened and sanded up to 320 grit. First coat of hardwax oil applied—the chatoyancy in this grain pattern is unreal under natural raking light.
+                </p>
+</div>
+<!-- Media Viewport (Photograph) -->
+<div class="relative w-full aspect-video rounded-lg overflow-hidden bg-surface-subtle border border-border-subtle mb-space-md group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300" data-alt="Close up artisan photograph of a bookmatched English walnut live edge tabletop being hand finished in a wood shop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTTX3iwyBirM62rri8yBwvrccnMZgW9Ug5h7pD8J2it2BzKDEvrNFxlpVzOJt0oxjZeFMlHrB1CxNJ9nrQ0u8oDrmjHk688MLQ6ouj4KvtLfCcTOG8Wqn_aC9oAMRbiyt3G3uIAowlhSTByjosen2KSzjuIZlxuo3xYzerQoB1ueXVPf-qlVQ02zg95n1MDxwhk8novkwGhtyR5ePTK2asOFF74gqfT1k-HjJch1ir1KUL21EgDrWdpQ"/>
+<div class="absolute bottom-2 left-2 px-2.5 py-1 rounded bg-surface-dim/85 backdrop-blur-sm border border-border-subtle text-caption font-caption text-text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary">lens</span>
+<span>English Walnut · Osmo Polyx Raw Finish</span>
+</div>
+</div>
+<!-- Tags -->
+<div class="flex items-center gap-space-xs flex-wrap mb-space-sm">
+<a class="font-label-sm text-[12px] text-primary hover:underline" href="#">#Woodworking</a>
+<a class="font-label-sm text-[12px] text-primary hover:underline" href="#">#FurnitureMakers</a>
+<a class="font-label-sm text-[12px] text-text-muted hover:text-text-primary" href="#">#Workshop</a>
+<a class="font-label-sm text-[12px] text-text-muted hover:text-text-primary" href="#">#Handcrafted</a>
+</div>
+<!-- Low-Key Interaction Row -->
+<div class="flex items-center justify-between pt-2 border-t border-border-subtle/50 text-text-muted">
+<div class="flex items-center gap-space-md">
+<button class="flex items-center gap-1.5 hover:text-accent-rose transition-colors group" onclick="toggleSimpleLike(this)">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+<span class="font-label-sm text-[13px] text-text-secondary group-hover:text-accent-rose">318</span>
+</button>
+<button class="flex items-center gap-1.5 hover:text-secondary transition-colors group">
+<span class="material-symbols-outlined text-[18px]">chat_bubble</span>
+<span class="font-label-sm text-[13px] text-text-secondary group-hover:text-secondary">45</span>
+</button>
+<button class="flex items-center gap-1.5 hover:text-primary transition-colors text-text-muted">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+</div>
+<button class="text-text-faint hover:text-primary transition-colors" title="Save update">
+<span class="material-symbols-outlined text-[18px]">bookmark</span>
+</button>
+</div>
+</article>
+<!-- POST 5: [Update / WIP] - The Clockwork Archipelago -->
+<article class="rounded-xl bg-surface-raised border border-border-subtle p-space-md shadow-md hover:border-border-default transition-all duration-150">
+<!-- Top Metadata Row -->
+<div class="flex items-start justify-between gap-space-sm mb-space-sm">
+<div class="flex items-start gap-3 min-w-0">
+<!-- Project Avatar: Rounded-Square -->
+<div class="w-9 h-9 rounded-lg bg-surface-overlay border border-border-subtle flex items-center justify-center font-headline-sm text-headline-sm font-bold text-accent-rose flex-shrink-0 shadow-inner">
+                    C
+                  </div>
+<div class="min-w-0">
+<div class="flex items-center gap-2 flex-wrap">
+<a class="font-headline-sm text-[16px] text-text-primary font-semibold hover:text-primary transition-colors truncate" href="#">
+                        The Clockwork Archipelago
+                      </a>
+<span class="px-2 py-0.5 rounded bg-surface-subtle text-caption font-caption text-text-secondary border border-border-subtle/50">
+                        Writing · Worldbuilding
+                      </span>
+</div>
+<!-- Creator Attribution -->
+<div class="flex items-center gap-1.5 text-caption font-caption text-text-muted mt-0.5">
+<div class="w-5 h-5 rounded-full bg-surface-subtle overflow-hidden flex-shrink-0 border border-border-subtle flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px] text-accent-rose">edit_note</span>
+</div>
+<span class="text-text-secondary font-medium">Naomi Scott</span>
+<span class="text-text-faint">@naomiscott_lit</span>
+<span class="w-1 h-1 rounded-full bg-text-faint"></span>
+<span class="text-text-faint">8h ago</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Update Badge & Follow Project Button -->
+<div class="flex items-center gap-2 flex-shrink-0">
+<div class="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-surface-subtle border border-border-subtle text-caption font-caption text-text-secondary font-medium">
+<span>Draft Excerpt</span>
+</div>
+<button class="h-7 px-2.5 rounded-full border border-border-default hover:border-primary hover:text-primary text-caption font-caption text-text-secondary transition-colors font-medium">
+                    + Follow
+                  </button>
+</div>
+</div>
+<!-- Body Text -->
+<div class="mb-space-md">
+<p class="font-body-md text-body-md text-text-primary leading-relaxed">
+                  Drafting Chapter 4: Tide-Locks of the Brass Atoll. Mapping how thermal currents dictate the maritime guild routes. Here is the working prose draft excerpt.
+                </p>
+</div>
+<!-- Markdown / Excerpt Card -->
+<div class="rounded-lg bg-surface-container-lowest border border-border-subtle p-space-md mb-space-md">
+<div class="flex items-center gap-2 pb-2 mb-2 border-b border-border-subtle text-caption font-caption text-text-faint">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+<span>Excerpt: Act I, Scene 3 — Thermal Currents of the Brass Basin</span>
+</div>
+<blockquote class="text-body-md italic text-text-secondary border-l-2 border-tertiary-fixed-dim/70 pl-3 my-1 leading-relaxed">
+                  "The barometer had not moved since daybreak, yet the copper rigging hummed with the pitch of approaching salt-steam. Below deck, the pendulum compass swung four degrees eastward—not pulled by magnetism, but by the relentless subterranean churn of the deep tide-locks."
+                </blockquote>
+<div class="flex items-center justify-between text-[11px] font-caption text-text-faint pt-2 mt-2">
+<span>Draft v0.4 · 1,240 words today</span>
+<span class="text-tertiary-fixed-dim hover:underline cursor-pointer">Read chapter draft (5 min) →</span>
+</div>
+</div>
+<!-- Tags -->
+<div class="flex items-center gap-space-xs flex-wrap mb-space-sm">
+<a class="font-label-sm text-[12px] text-tertiary-fixed-dim hover:underline" href="#">#CreativeWriting</a>
+<a class="font-label-sm text-[12px] text-tertiary-fixed-dim hover:underline" href="#">#Worldbuilding</a>
+<a class="font-label-sm text-[12px] text-text-muted hover:text-text-primary" href="#">#SpeculativeFiction</a>
+</div>
+<!-- Low-Key Interaction Row -->
+<div class="flex items-center justify-between pt-2 border-t border-border-subtle/50 text-text-muted">
+<div class="flex items-center gap-space-md">
+<button class="flex items-center gap-1.5 hover:text-accent-rose transition-colors group" onclick="toggleSimpleLike(this)">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+<span class="font-label-sm text-[13px] text-text-secondary group-hover:text-accent-rose">94</span>
+</button>
+<button class="flex items-center gap-1.5 hover:text-secondary transition-colors group">
+<span class="material-symbols-outlined text-[18px]">chat_bubble</span>
+<span class="font-label-sm text-[13px] text-text-secondary group-hover:text-secondary">16</span>
+</button>
+<button class="flex items-center gap-1.5 hover:text-primary transition-colors text-text-muted">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+</div>
+<button class="text-text-faint hover:text-primary transition-colors" title="Save draft">
+<span class="material-symbols-outlined text-[18px]">bookmark</span>
+</button>
+</div>
+</article>
+</div>
+<!-- Feed End Indicator -->
+<div class="py-space-2xl flex flex-col items-center justify-center text-center gap-space-xs text-text-faint">
+<div class="w-8 h-8 rounded-full bg-surface border border-border-subtle flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]">done_all</span>
+</div>
+<p class="font-label-md text-label-md text-text-secondary font-medium">You are all caught up!</p>
+<p class="font-caption text-caption">Chronological feed is complete. Follow more projects or share an update of your own.</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+    // Tab switching for Everything / Following
+    function switchStreamTab(tab) {
+      const everythingBtn = document.getElementById('tab-everything');
+      const followingBtn = document.getElementById('tab-following');
+      
+      if (tab === 'everything') {
+        everythingBtn.className = 'px-space-md py-1.5 rounded-lg bg-surface-raised text-primary font-label-md text-label-md transition-all font-semibold';
+        followingBtn.className = 'px-space-md py-1.5 rounded-lg text-text-muted hover:text-text-primary font-label-md text-label-md transition-all font-normal';
+      } else {
+        followingBtn.className = 'px-space-md py-1.5 rounded-lg bg-surface-raised text-primary font-label-md text-label-md transition-all font-semibold';
+        everythingBtn.className = 'px-space-md py-1.5 rounded-lg text-text-muted hover:text-text-primary font-label-md text-label-md transition-all font-normal';
+      }
+    }
+
+    // Sort Menu Controls
+    function toggleSortMenu() {
+      const flyout = document.getElementById('sort-flyout');
+      flyout.classList.toggle('hidden');
+    }
+
+    function setSort(label) {
+      document.getElementById('current-sort-label').textContent = label;
+      document.getElementById('sort-flyout').classList.add('hidden');
+    }
+
+    // Composer Post Type Selector
+    function selectPostType(type) {
+      const types = ['update', 'question', 'resource', 'milestone'];
+      const textarea = document.getElementById('composer-textarea');
+      
+      types.forEach(t => {
+        const btn = document.getElementById('posttype-' + t);
+        if (t === type.toLowerCase()) {
+          btn.className = 'px-2.5 py-1 rounded-md text-caption font-caption font-semibold bg-surface-raised text-text-primary shadow-sm';
+        } else {
+          btn.className = 'px-2.5 py-1 rounded-md text-caption font-caption text-text-muted hover:text-text-primary transition-colors';
+        }
+      });
+
+      if (type === 'Question') {
+        textarea.placeholder = "Ask the community for advice or debugging help on your project...";
+      } else if (type === 'Resource') {
+        textarea.placeholder = "Share a code snippet, asset pack, 3D model, or open source tool...";
+      } else if (type === 'Milestone') {
+        textarea.placeholder = "Celebrate a major release, alpha build, launch date, or physical milestone...";
+      } else {
+        textarea.placeholder = "What are you making or figuring out today? Share a devlog or WIP snapshot...";
+      }
+    }
+
+    // Simple, quiet like toggle (no excessive metrics)
+    function toggleSimpleLike(button) {
+      const countEl = button.querySelector('span:nth-child(2)');
+      const icon = button.querySelector('.material-symbols-outlined');
+      const isLiked = button.getAttribute('data-liked') === 'true';
+      let currentVal = parseInt(countEl.textContent, 10);
+
+      if (!isLiked) {
+        button.setAttribute('data-liked', 'true');
+        button.classList.add('text-accent-rose');
+        countEl.classList.add('text-accent-rose');
+        icon.style.fontVariationSettings = "'FILL' 1";
+        countEl.textContent = currentVal + 1;
+      } else {
+        button.setAttribute('data-liked', 'false');
+        button.classList.remove('text-accent-rose');
+        countEl.classList.remove('text-accent-rose');
+        icon.style.fontVariationSettings = "'FILL' 0";
+        countEl.textContent = Math.max(0, currentVal - 1);
+      }
+    }
+
+    // Close sort menu on click outside
+    document.addEventListener('click', function(event) {
+      const flyout = document.getElementById('sort-flyout');
+      const trigger = document.getElementById('sort-trigger');
+      if (flyout && trigger && !trigger.contains(event.target) && !flyout.contains(event.target)) {
+        flyout.classList.add('hidden');
+      }
+    });
+  </script>
+</body></html>
