@@ -50,7 +50,7 @@ export function ComposeDialog({ open, onClose }: ComposeDialogProps) {
 			/>
 			<div
 				className={cn(
-					'glass-panel relative flex max-h-[min(100dvh,48rem)] w-full flex-col overflow-hidden border shadow-2xl',
+					'panel-solid relative flex max-h-[min(100dvh,48rem)] w-full flex-col overflow-hidden border shadow-2xl',
 					'rounded-t-2xl md:max-w-2xl md:rounded-2xl',
 				)}
 			>

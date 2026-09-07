@@ -137,7 +137,7 @@ export function FeedToolbar({
 							/>
 							<div
 								className={cn(
-									'glass-panel z-50 border shadow-2xl',
+									'panel-solid z-50 border shadow-2xl',
 									'fixed inset-x-0 bottom-0 max-h-[min(92dvh,calc(100dvh-env(safe-area-inset-bottom)))] overflow-y-auto overscroll-contain rounded-t-2xl p-4 pb-[max(1rem,env(safe-area-inset-bottom))]',
 									'md:absolute md:inset-auto md:bottom-auto md:right-0 md:mt-2 md:max-h-[calc(100dvh-6rem)] md:w-[min(28rem,calc(100vw-2rem))] md:overflow-y-auto md:rounded-xl md:p-5',
 									'lg:w-[min(32rem,calc(100vw-2rem))]',
