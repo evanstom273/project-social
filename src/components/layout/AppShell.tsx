@@ -27,7 +27,7 @@ export function AppShell({ children, rightRail }: AppShellProps) {
 			<main
 				className={cn(
 					'fixed top-16 bottom-0 z-10 overflow-x-hidden overflow-y-auto overscroll-y-contain',
-					'inset-x-0 lg:left-64',
+					'inset-x-0 md:landscape:left-64 lg:left-64',
 					rightRail ? 'xl:right-80' : 'xl:right-0',
 				)}
 			>
