@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import type { MediaFilter, PostType } from '@/domain/feed-types';
 import type { FeedFilterMode, FeedSortMode } from '@/domain/types';
@@ -7,6 +8,16 @@ import { FeedHeader } from '@/components/feed/FeedHeader';
 import { FeedToolbar } from '@/components/feed/FeedToolbar';
 import { PostCard } from '@/components/feed/PostCard';
 import { IconHoneycomb } from '@/components/feed/icons';
+import {
+	buildFeedSearchParams,
+	parseFeedSearchParams,
+	type FeedSearchState,
+} from '@/features/home/feed-search-params';
+import {
+	clearFeedScrollPosition,
+	getAppMainScrollElement,
+	readFeedScrollPosition,
+} from '@/lib/feed-scroll';
 
 function matchesSearchQuery(post: ReturnType<typeof listMockFeedPosts>[number], query: string) {
 	const normalizedQuery = query.trim().toLowerCase();
@@ -31,88 +42,115 @@ function matchesSearchQuery(post: ReturnType<typeof listMockFeedPosts>[number], 
 	return haystack.includes(normalizedQuery);
 }
 
-function filterPosts({
-	filterMode,
-	searchQuery,
-	mediaFilter,
-	postTypeFilter,
-	craftTag,
-}: {
-	filterMode: FeedFilterMode;
-	searchQuery: string;
-	mediaFilter: MediaFilter;
-	postTypeFilter: PostType | 'all';
-	craftTag: string | null;
-}) {
-	return listMockFeedPosts().filter((post) => {
-		if (filterMode === 'following' && post.id !== 'post-1' && post.id !== 'post-4') {
+function sortPosts(posts: ReturnType<typeof listMockFeedPosts>, sortMode: FeedSortMode) {
+	if (sortMode === 'newest') {
+		return posts;
+	}
+
+	const sorted = [...posts];
+
+	if (sortMode === 'most-discussed') {
+		return sorted.sort((left, right) => right.comments - left.comments);
+	}
+
+	return sorted.sort((left, right) => right.likes - left.likes);
+}
+
+function filterPosts(state: FeedSearchState) {
+	const filtered = listMockFeedPosts().filter((post) => {
+		if (state.filterMode === 'following' && post.id !== 'post-1' && post.id !== 'post-4') {
 			return false;
 		}
 
-		if (!matchesSearchQuery(post, searchQuery)) {
+		if (!matchesSearchQuery(post, state.searchQuery)) {
 			return false;
 		}
 
-		if (mediaFilter !== 'all' && post.mediaFilter !== mediaFilter) {
+		if (state.mediaFilter !== 'all' && post.mediaFilter !== state.mediaFilter) {
 			return false;
 		}
 
-		if (postTypeFilter !== 'all' && post.type !== postTypeFilter) {
+		if (state.postTypeFilter !== 'all' && post.type !== state.postTypeFilter) {
 			return false;
 		}
 
-		if (craftTag && !post.tags.some((tag) => tag.toLowerCase() === craftTag.toLowerCase())) {
+		if (
+			state.craftTag &&
+			!post.tags.some((tag) => tag.toLowerCase() === state.craftTag?.toLowerCase())
+		) {
 			return false;
 		}
 
 		return true;
 	});
+
+	return sortPosts(filtered, state.sortMode);
+}
+
+function updateFeedSearchParam(
+	currentParams: URLSearchParams,
+	patch: Partial<FeedSearchState>,
+) {
+	const nextState: FeedSearchState = {
+		...parseFeedSearchParams(currentParams),
+		...patch,
+	};
+	return buildFeedSearchParams(nextState);
 }
 
 export function HomePage() {
-	const [filterMode, setFilterMode] = useState<FeedFilterMode>('everything');
-	const [sortMode, setSortMode] = useState<FeedSortMode>('newest');
-	const [searchQuery, setSearchQuery] = useState('');
-	const [mediaFilter, setMediaFilter] = useState<MediaFilter>('all');
-	const [postTypeFilter, setPostTypeFilter] = useState<PostType | 'all'>('all');
-	const [craftTag, setCraftTag] = useState<string | null>(null);
+	const [searchParams, setSearchParams] = useSearchParams();
+	const feedState = useMemo(() => parseFeedSearchParams(searchParams), [searchParams]);
 
-	const posts = useMemo(
-		() =>
-			filterPosts({
-				filterMode,
-				searchQuery,
-				mediaFilter,
-				postTypeFilter,
-				craftTag,
-			}),
-		[filterMode, searchQuery, mediaFilter, postTypeFilter, craftTag],
-	);
+	const posts = useMemo(() => filterPosts(feedState), [feedState]);
+
+	useEffect(() => {
+		const savedScroll = readFeedScrollPosition();
+		if (savedScroll === null) {
+			return;
+		}
+
+		const main = getAppMainScrollElement();
+		if (!main) {
+			return;
+		}
+
+		requestAnimationFrame(() => {
+			main.scrollTop = savedScroll;
+			clearFeedScrollPosition();
+		});
+	}, [searchParams]);
+
+	function setFeedState(patch: Partial<FeedSearchState>) {
+		setSearchParams(updateFeedSearchParam(searchParams, patch), { replace: true });
+	}
 
 	return (
 		<>
 			<FeedHeader
-				filterMode={filterMode}
-				sortMode={sortMode}
-				onFilterModeChange={setFilterMode}
+				filterMode={feedState.filterMode}
+				sortMode={feedState.sortMode}
+				onFilterModeChange={(filterMode: FeedFilterMode) => setFeedState({ filterMode })}
 			/>
 
 			<FeedToolbar
-				searchQuery={searchQuery}
-				mediaFilter={mediaFilter}
-				postTypeFilter={postTypeFilter}
-				sortMode={sortMode}
-				craftTag={craftTag}
-				onSearchQueryChange={setSearchQuery}
-				onMediaFilterChange={setMediaFilter}
-				onPostTypeFilterChange={setPostTypeFilter}
-				onSortModeChange={setSortMode}
-				onCraftTagChange={setCraftTag}
+				searchQuery={feedState.searchQuery}
+				mediaFilter={feedState.mediaFilter}
+				postTypeFilter={feedState.postTypeFilter}
+				sortMode={feedState.sortMode}
+				craftTag={feedState.craftTag}
+				onSearchQueryChange={(searchQuery) => setFeedState({ searchQuery })}
+				onMediaFilterChange={(mediaFilter: MediaFilter) => setFeedState({ mediaFilter })}
+				onPostTypeFilterChange={(postTypeFilter: PostType | 'all') =>
+					setFeedState({ postTypeFilter })
+				}
+				onSortModeChange={(sortMode: FeedSortMode) => setFeedState({ sortMode })}
+				onCraftTagChange={(craftTag) => setFeedState({ craftTag })}
 			/>
 
 			<div className="mt-6 flex flex-col gap-6">
 				{posts.map((post) => (
-					<PostCard key={post.id} post={post} />
+					<PostCard key={post.id} post={post} feedState={feedState} />
 				))}
 			</div>
 

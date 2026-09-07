@@ -9,6 +9,7 @@ import { HomePage } from '@/features/home/HomePage';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { ProfilePage } from '@/features/profile/ProfilePage';
 import { ProjectsPage } from '@/features/projects/ProjectsPage';
+import { PostDetailPage } from '@/features/posts/PostDetailPage';
 import { SavedPage } from '@/features/saved/SavedPage';
 import { SignupPage } from '@/features/auth/SignupPage';
 
@@ -17,6 +18,7 @@ function ShellLayout() {
 		<AppShell rightRail={<FeedDiscoveryRail />}>
 			<Routes>
 				<Route path="/" element={<HomePage />} />
+				<Route path="/posts/:postId" element={<PostDetailPage />} />
 				<Route path="/explore" element={<ExplorePage />} />
 				<Route path="/create" element={<CreatePage />} />
 				<Route path="/communities" element={<CommunitiesPage />} />
