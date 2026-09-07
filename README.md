@@ -58,12 +58,25 @@ src/
 Visual language and component guidance live in [`project-social-design.md`](./project-social-design.md).
 Product concept: [`Project_Centred_Social_Network_Concept.docx`](./Project_Centred_Social_Network_Concept.docx).
 
-## Deployment (first open)
+## Deployment (Cloudflare Workers & Pages)
 
-1. Run `pnpm build` — output is in `dist/`.
-2. Deploy `dist/` to Cloudflare Pages (or equivalent static host).
-3. Configure SPA fallback so client routes resolve to `index.html` (`public/_redirects` is included for Cloudflare).
-4. Set environment variables in the host dashboard when Supabase and media services are ready.
+This project deploys as a **Cloudflare Worker serving static assets** from `dist/`.
+
+### Dashboard settings
+
+| Setting | Value |
+|---|---|
+| Build command | `pnpm run build` |
+| Deploy command | `pnpm run deploy` (or `npx wrangler deploy` after build) |
+| Root directory | `/` |
+
+SPA routing is handled by `wrangler.jsonc` (`not_found_handling: "single-page-application"`). Do **not** add a `public/_redirects` file — it conflicts with Wrangler and causes an infinite-loop deploy error.
+
+### First deploy checklist
+
+1. Run `pnpm build` locally to verify the build.
+2. Push to the connected branch and let Cloudflare build + deploy.
+3. Set environment variables in the Cloudflare dashboard when Supabase and media services are ready.
 
 No secrets belong in the repository. Use `.env.local` locally and provider secrets in production.
 
