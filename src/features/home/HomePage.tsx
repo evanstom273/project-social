@@ -2,26 +2,54 @@ import { useMemo, useState } from 'react';
 
 import type { MediaFilter, PostType } from '@/domain/feed-types';
 import type { FeedFilterMode, FeedSortMode } from '@/domain/types';
-import { listMockFeedPosts, MOCK_CURRENT_USER } from '@/data/feed-mock';
-import { FeedComposer } from '@/components/feed/FeedComposer';
-import { FeedFilters } from '@/components/feed/FeedFilters';
+import { listMockFeedPosts } from '@/data/feed-mock';
 import { FeedHeader } from '@/components/feed/FeedHeader';
+import { FeedToolbar } from '@/components/feed/FeedToolbar';
 import { PostCard } from '@/components/feed/PostCard';
 import { IconHoneycomb } from '@/components/feed/icons';
 
+function matchesSearchQuery(post: ReturnType<typeof listMockFeedPosts>[number], query: string) {
+	const normalizedQuery = query.trim().toLowerCase();
+	if (!normalizedQuery) {
+		return true;
+	}
+
+	const haystack = [
+		post.body,
+		post.title,
+		post.project.name,
+		post.project.category,
+		post.author.displayName,
+		post.author.handle,
+		post.badge,
+		...post.tags,
+	]
+		.filter(Boolean)
+		.join(' ')
+		.toLowerCase();
+
+	return haystack.includes(normalizedQuery);
+}
+
 function filterPosts({
 	filterMode,
+	searchQuery,
 	mediaFilter,
 	postTypeFilter,
 	craftTag,
 }: {
 	filterMode: FeedFilterMode;
+	searchQuery: string;
 	mediaFilter: MediaFilter;
 	postTypeFilter: PostType | 'all';
 	craftTag: string | null;
 }) {
 	return listMockFeedPosts().filter((post) => {
 		if (filterMode === 'following' && post.id !== 'post-1' && post.id !== 'post-4') {
+			return false;
+		}
+
+		if (!matchesSearchQuery(post, searchQuery)) {
 			return false;
 		}
 
@@ -44,13 +72,21 @@ function filterPosts({
 export function HomePage() {
 	const [filterMode, setFilterMode] = useState<FeedFilterMode>('everything');
 	const [sortMode, setSortMode] = useState<FeedSortMode>('newest');
+	const [searchQuery, setSearchQuery] = useState('');
 	const [mediaFilter, setMediaFilter] = useState<MediaFilter>('all');
 	const [postTypeFilter, setPostTypeFilter] = useState<PostType | 'all'>('all');
 	const [craftTag, setCraftTag] = useState<string | null>(null);
 
 	const posts = useMemo(
-		() => filterPosts({ filterMode, mediaFilter, postTypeFilter, craftTag }),
-		[filterMode, mediaFilter, postTypeFilter, craftTag],
+		() =>
+			filterPosts({
+				filterMode,
+				searchQuery,
+				mediaFilter,
+				postTypeFilter,
+				craftTag,
+			}),
+		[filterMode, searchQuery, mediaFilter, postTypeFilter, craftTag],
 	);
 
 	return (
@@ -61,20 +97,18 @@ export function HomePage() {
 				onFilterModeChange={setFilterMode}
 			/>
 
-			<FeedFilters
+			<FeedToolbar
+				searchQuery={searchQuery}
 				mediaFilter={mediaFilter}
 				postTypeFilter={postTypeFilter}
 				sortMode={sortMode}
 				craftTag={craftTag}
+				onSearchQueryChange={setSearchQuery}
 				onMediaFilterChange={setMediaFilter}
 				onPostTypeFilterChange={setPostTypeFilter}
 				onSortModeChange={setSortMode}
 				onCraftTagChange={setCraftTag}
 			/>
-
-			<div className="mt-6">
-				<FeedComposer currentUser={MOCK_CURRENT_USER} />
-			</div>
 
 			<div className="mt-6 flex flex-col gap-6">
 				{posts.map((post) => (

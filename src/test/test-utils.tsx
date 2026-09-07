@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { AuthProvider } from '@/app/providers/AuthProvider';
+import { ComposeProvider } from '@/app/providers/ComposeProvider';
 
 export function renderWithProviders(
   ui: ReactElement,
@@ -10,7 +11,9 @@ export function renderWithProviders(
 ) {
   return render(
     <MemoryRouter initialEntries={[route]}>
-      <AuthProvider>{ui}</AuthProvider>
+      <AuthProvider>
+        <ComposeProvider>{ui}</ComposeProvider>
+      </AuthProvider>
     </MemoryRouter>,
   );
 }
