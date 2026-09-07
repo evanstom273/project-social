@@ -108,7 +108,7 @@ hard-coded colours.
 
 ## Deployment notes
 
-The app is a static Vite build suitable for **Cloudflare Pages** (or similar). SPA routing
-requires serving `index.html` for unknown paths — see `public/_redirects`.
+The app is a static Vite build deployed via **Cloudflare Workers static assets** (see `wrangler.jsonc`).
+SPA routing uses `not_found_handling: "single-page-application"` — do not add a `public/_redirects` file.
 
 Set production environment variables in the hosting provider dashboard. Never commit secrets.
