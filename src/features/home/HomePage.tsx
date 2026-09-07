@@ -1,121 +1,103 @@
-import { ButtonLink } from '@/components/ui/Button';
+import { useMemo, useState } from 'react';
+
+import type { MediaFilter, PostType } from '@/domain/feed-types';
+import type { FeedFilterMode, FeedSortMode } from '@/domain/types';
+import { listMockFeedPosts, MOCK_CURRENT_USER } from '@/data/feed-mock';
 import { Container } from '@/components/ui/Container';
-import { Text } from '@/components/ui/Text';
-import { ROUTES } from '@/config/constants';
+import { FeedComposer } from '@/components/feed/FeedComposer';
+import { FeedDiscoveryRail } from '@/components/feed/FeedDiscoveryRail';
+import { FeedFilters } from '@/components/feed/FeedFilters';
+import { FeedHeader } from '@/components/feed/FeedHeader';
+import { PostCard } from '@/components/feed/PostCard';
+import { IconHoneycomb } from '@/components/feed/icons';
 
-const highlights = [
-  {
-    title: 'Projects matter as much as profiles',
-    description:
-      'Follow the thing being made — a game, album, build, or novel — not just the person behind it.',
-  },
-  {
-    title: 'Chronological by default',
-    description:
-      'The public feed is newest-first. Ranking appears only when you explicitly ask for it.',
-  },
-  {
-    title: 'Small updates are valid',
-    description:
-      'A sentence and a screenshot should feel complete. The interface is built for work in progress.',
-  },
-];
+function filterPosts({
+	filterMode,
+	mediaFilter,
+	postTypeFilter,
+	craftTag,
+}: {
+	filterMode: FeedFilterMode;
+	mediaFilter: MediaFilter;
+	postTypeFilter: PostType | 'all';
+	craftTag: string | null;
+}) {
+	return listMockFeedPosts().filter((post) => {
+		if (filterMode === 'following' && post.id !== 'post-1' && post.id !== 'post-4') {
+			return false;
+		}
 
-const craftExamples = [
-  'Indie games',
-  '3D art',
-  'Minecraft builds',
-  'Software tools',
-  'Writing',
-  'Woodworking',
-  'Music',
-  'Electronics',
-];
+		if (mediaFilter !== 'all' && post.mediaFilter !== mediaFilter) {
+			return false;
+		}
+
+		if (postTypeFilter !== 'all' && post.type !== postTypeFilter) {
+			return false;
+		}
+
+		if (craftTag && !post.tags.some((tag) => tag.toLowerCase() === craftTag.toLowerCase())) {
+			return false;
+		}
+
+		return true;
+	});
+}
 
 export function HomePage() {
-  return (
-    <Container width="feed">
-      <div className="space-y-10">
-        <header className="space-y-5">
-          <Text as="p" variant="label-sm" className="text-primary">
-            Work in progress, shared openly
-          </Text>
-          <Text as="h1" variant="display-sm">
-            Discover, follow and share things while they&apos;re being made.
-          </Text>
-          <Text variant="body-lg" muted>
-            Project Social is a visual network organised around projects, creators and
-            communities — a lively creative workshop, not an engagement-optimised feed.
-          </Text>
-          <div className="flex flex-wrap gap-3 pt-2">
-            <ButtonLink to={ROUTES.explore}>Explore projects</ButtonLink>
-            <ButtonLink to={ROUTES.signup} variant="secondary">
-              Join early access
-            </ButtonLink>
-          </div>
-        </header>
+	const [filterMode, setFilterMode] = useState<FeedFilterMode>('everything');
+	const [sortMode, setSortMode] = useState<FeedSortMode>('newest');
+	const [mediaFilter, setMediaFilter] = useState<MediaFilter>('all');
+	const [postTypeFilter, setPostTypeFilter] = useState<PostType | 'all'>('all');
+	const [craftTag, setCraftTag] = useState<string | null>(null);
 
-        <section
-          className="rounded-lg border border-border-subtle bg-surface p-6 md:p-8"
-          aria-labelledby="highlights-heading"
-        >
-          <Text as="h2" id="highlights-heading" variant="headline-sm">
-            Built for makers and curious spectators
-          </Text>
-          <ul className="mt-6 space-y-5">
-            {highlights.map((item) => (
-              <li key={item.title} className="border-t border-border-subtle pt-5 first:border-t-0 first:pt-0">
-                <Text as="h3" variant="headline-sm" className="text-base">
-                  {item.title}
-                </Text>
-                <Text variant="body-md" muted className="mt-2">
-                  {item.description}
-                </Text>
-              </li>
-            ))}
-          </ul>
-        </section>
+	const posts = useMemo(
+		() => filterPosts({ filterMode, mediaFilter, postTypeFilter, craftTag }),
+		[filterMode, mediaFilter, postTypeFilter, craftTag],
+	);
 
-        <section aria-labelledby="crafts-heading">
-          <Text as="h2" id="crafts-heading" variant="headline-sm">
-            Any kind of project belongs here
-          </Text>
-          <Text variant="body-md" muted className="mt-3">
-            Game development may be an early culture, but the platform supports every
-            craft where people make things in public.
-          </Text>
-          <ul className="mt-5 flex flex-wrap gap-2">
-            {craftExamples.map((craft) => (
-              <li
-                key={craft}
-                className="rounded-full border border-border-default bg-surface-raised px-3 py-1.5 text-label-md text-text-secondary"
-              >
-                {craft}
-              </li>
-            ))}
-          </ul>
-        </section>
+	return (
+		<Container width="feed">
+			<FeedHeader
+				filterMode={filterMode}
+				sortMode={sortMode}
+				onFilterModeChange={setFilterMode}
+			/>
 
-        <section
-          className="rounded-lg border border-border-subtle bg-surface-raised p-6"
-          aria-labelledby="feed-preview-heading"
-        >
-          <Text as="h2" id="feed-preview-heading" variant="headline-sm">
-            A feed you can trust
-          </Text>
-          <Text variant="body-md" muted className="mt-3">
-            Everything and Following are explicit views. No hidden re-ranking because you
-            lingered on a clip. The default public stream is chronological — newest post
-            first.
-          </Text>
-          <div className="mt-5 inline-flex rounded-default border border-border-default bg-surface p-1">
-            <span className="rounded-sm bg-primary-muted px-3 py-1.5 text-label-md text-primary">
-              Everything
-            </span>
-            <span className="px-3 py-1.5 text-label-md text-text-muted">Following</span>
-          </div>
-        </section>
-      </div>
-    </Container>
-  );
+			<FeedFilters
+				mediaFilter={mediaFilter}
+				postTypeFilter={postTypeFilter}
+				sortMode={sortMode}
+				craftTag={craftTag}
+				onMediaFilterChange={setMediaFilter}
+				onPostTypeFilterChange={setPostTypeFilter}
+				onSortModeChange={setSortMode}
+				onCraftTagChange={setCraftTag}
+			/>
+
+			<div className="mt-6">
+				<FeedComposer currentUser={MOCK_CURRENT_USER} />
+			</div>
+
+			<div className="flex flex-col gap-6">
+				{posts.map((post) => (
+					<PostCard key={post.id} post={post} />
+				))}
+			</div>
+
+			{posts.length === 0 ? (
+				<p className="py-12 text-center text-body-md text-text-muted">
+					No posts match the current filters.
+				</p>
+			) : (
+				<div className="flex flex-col items-center gap-2 py-10 text-text-muted">
+					<IconHoneycomb className="size-5 text-primary" />
+					<p className="text-body-sm">You are all caught up!</p>
+				</div>
+			)}
+		</Container>
+	);
+}
+
+export function HomeDiscoveryRail() {
+	return <FeedDiscoveryRail />;
 }

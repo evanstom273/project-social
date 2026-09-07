@@ -6,3 +6,4 @@
  */
 
 export * from './drafts';
+export * from './feed-mock';
