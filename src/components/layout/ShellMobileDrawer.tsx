@@ -33,7 +33,7 @@ export function ShellMobileDrawer({ open, onClose }: ShellMobileDrawerProps) {
 	}
 
 	return (
-		<div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Navigation menu">
+		<div className="fixed inset-0 z-50 md:landscape:hidden lg:hidden" role="dialog" aria-modal="true" aria-label="Navigation menu">
 			<button
 				type="button"
 				className="absolute inset-0 bg-scrim"
