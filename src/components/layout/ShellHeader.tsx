@@ -19,7 +19,7 @@ type ShellHeaderProps = {
 
 export function ShellHeader({ onMenuOpen }: ShellHeaderProps) {
 	return (
-		<header className="fixed inset-x-0 top-0 z-40 border-b border-border-subtle bg-surface/90 shadow-[0_1px_12px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+		<header className="z-40 shrink-0 border-b border-border-subtle bg-surface/90 shadow-[0_1px_12px_rgba(0,0,0,0.5)] backdrop-blur-xl">
 			<div className="flex h-16 items-center justify-between px-[var(--spacing-gutter-mobile)] md:px-[var(--spacing-gutter-tablet)] lg:px-[var(--spacing-gutter-desktop)]">
 				<div className="flex min-w-0 items-center gap-3">
 					<button

@@ -54,7 +54,7 @@ export function HomePage() {
 	);
 
 	return (
-		<div className="mx-auto w-full max-w-[var(--spacing-feed-max)] px-[var(--spacing-gutter-mobile)] py-6 md:px-[var(--spacing-gutter-tablet)] lg:px-[var(--spacing-gutter-desktop)] lg:py-8">
+		<>
 			<FeedHeader
 				filterMode={filterMode}
 				sortMode={sortMode}
@@ -92,6 +92,6 @@ export function HomePage() {
 					<p className="text-body-sm">You are all caught up!</p>
 				</div>
 			)}
-		</div>
+		</>
 	);
 }
