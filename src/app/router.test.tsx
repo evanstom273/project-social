@@ -6,28 +6,28 @@ import { AppRouter } from '@/app/router';
 import { renderWithProviders } from '@/test/test-utils';
 
 describe('AppRouter', () => {
-  it('renders the landing page inside the application shell', () => {
-    renderWithProviders(<AppRouter />, { route: '/' });
+	it('renders the feed inside the application shell', () => {
+		renderWithProviders(<AppRouter />, { route: '/' });
 
-    expect(
-      screen.getByRole('heading', {
-        name: /discover, follow and share things while they're being made/i,
-      }),
-    ).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /^feed$/i })).toBeInTheDocument();
+		expect(screen.getByRole('tablist', { name: /feed perspective/i })).toBeInTheDocument();
+		expect(screen.getByRole('region', { name: /create post/i })).toBeInTheDocument();
+		expect(screen.getByText(/aetheria: chrono echoes/i)).toBeInTheDocument();
 
-    expect(screen.getByLabelText('Mobile navigation')).toBeInTheDocument();
-    expect(screen.getByLabelText('Desktop navigation')).toBeInTheDocument();
-  });
+		expect(screen.getByLabelText('Mobile navigation')).toBeInTheDocument();
+		expect(screen.getByLabelText('Desktop navigation')).toBeInTheDocument();
+		expect(screen.getByLabelText('Discovery')).toBeInTheDocument();
+	});
 
-  it('navigates to placeholder routes from the landing page', async () => {
-    const user = userEvent.setup();
+	it('navigates to placeholder routes from the feed', async () => {
+		const user = userEvent.setup();
 
-    renderWithProviders(<AppRouter />, { route: '/' });
+		renderWithProviders(<AppRouter />, { route: '/' });
 
-    await user.click(screen.getByRole('link', { name: /explore projects/i }));
+		await user.click(screen.getByRole('link', { name: /^explore crafts$/i }));
 
-    expect(
-      screen.getByRole('heading', { name: /^explore$/i }),
-    ).toBeInTheDocument();
-  });
+		expect(
+			screen.getByRole('heading', { name: /^explore$/i }),
+		).toBeInTheDocument();
+	});
 });

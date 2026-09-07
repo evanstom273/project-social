@@ -30,13 +30,26 @@ export const NAV_ITEMS: Array<{
 ];
 
 export const DESKTOP_NAV_ITEMS: Array<{
-  to: string;
-  label: string;
-  end?: boolean;
+	to: string;
+	label: string;
+	end?: boolean;
+	icon: 'home' | 'explore' | 'communities' | 'projects' | 'saved';
 }> = [
-  { to: ROUTES.home, label: 'Home', end: true },
-  { to: ROUTES.explore, label: 'Explore' },
-  { to: ROUTES.communities, label: 'Communities' },
-  { to: ROUTES.projects, label: 'Projects' },
-  { to: ROUTES.saved, label: 'Saved' },
+	{ to: ROUTES.home, label: 'Home Feed', end: true, icon: 'home' },
+	{ to: ROUTES.explore, label: 'Explore Crafts', icon: 'explore' },
+	{ to: ROUTES.communities, label: 'Communities', icon: 'communities' },
+	{ to: ROUTES.projects, label: 'My Projects', icon: 'projects' },
+	{ to: ROUTES.saved, label: 'Saved Items', icon: 'saved' },
+];
+
+export const DESKTOP_TOP_NAV_ITEMS: Array<{
+	to: string;
+	label: string;
+	end?: boolean;
+}> = [
+	{ to: ROUTES.home, label: 'Home', end: true },
+	{ to: ROUTES.explore, label: 'Explore' },
+	{ to: ROUTES.communities, label: 'Communities' },
+	{ to: ROUTES.projects, label: 'Projects' },
+	{ to: ROUTES.saved, label: 'Saved' },
 ];

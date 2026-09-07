@@ -2,34 +2,37 @@ import { type ReactNode } from 'react';
 
 import { DesktopNavRail } from '@/components/layout/DesktopNavRail';
 import { MobileBottomNav } from '@/components/layout/MobileBottomNav';
+import { TopHeader } from '@/components/layout/TopHeader';
 import { Container } from '@/components/ui/Container';
 
 type AppShellProps = {
-  children: ReactNode;
-  rightRail?: ReactNode;
+	children: ReactNode;
+	rightRail?: ReactNode;
 };
 
 export function AppShell({ children, rightRail }: AppShellProps) {
-  return (
-    <div className="min-h-dvh bg-background">
-      <Container className="flex min-h-dvh gap-6 lg:gap-8">
-        <DesktopNavRail />
+	return (
+		<div className="min-h-dvh bg-background">
+			<TopHeader />
 
-        <div className="flex min-w-0 flex-1 flex-col pb-24 lg:pb-8">
-          <main className="gutter-x flex-1 py-6 lg:py-8">{children}</main>
-        </div>
+			<Container className="flex min-h-[calc(100dvh-4rem)] gap-0 lg:gap-6 xl:gap-8">
+				<DesktopNavRail />
 
-        {rightRail ? (
-          <aside
-            className="hidden xl:block w-72 shrink-0 py-8 pr-[var(--spacing-gutter-desktop)]"
-            aria-label="Context"
-          >
-            {rightRail}
-          </aside>
-        ) : null}
-      </Container>
+				<div className="flex min-w-0 flex-1 flex-col pb-24 lg:pb-8">
+					<main className="gutter-x flex-1 py-4 lg:py-6">{children}</main>
+				</div>
 
-      <MobileBottomNav />
-    </div>
-  );
+				{rightRail ? (
+					<aside
+						className="hidden w-80 shrink-0 border-l border-border-subtle py-6 pr-[var(--spacing-gutter-desktop)] xl:block"
+						aria-label="Discovery"
+					>
+						{rightRail}
+					</aside>
+				) : null}
+			</Container>
+
+			<MobileBottomNav />
+		</div>
+	);
 }
