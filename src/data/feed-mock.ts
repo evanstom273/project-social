@@ -245,3 +245,7 @@ export const MOCK_FEED_POSTS: FeedPost[] = [
 export function listMockFeedPosts(): FeedPost[] {
 	return MOCK_FEED_POSTS;
 }
+
+export function getMockFeedPostById(postId: string): FeedPost | undefined {
+	return MOCK_FEED_POSTS.find((post) => post.id === postId);
+}

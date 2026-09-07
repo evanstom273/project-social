@@ -10,6 +10,7 @@ export const ROUTES = {
 	signup: '/auth/signup',
 	project: (slug: string) => `/p/${slug}`,
 	community: (slug: string) => `/c/${slug}`,
+	post: (postId: string) => `/posts/${postId}`,
 } as const;
 
 export const MAX_VIDEO_DURATION_SECONDS = 60;

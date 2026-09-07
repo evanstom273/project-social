@@ -50,8 +50,8 @@ export function ComposeDialog({ open, onClose }: ComposeDialogProps) {
 			/>
 			<div
 				className={cn(
-					'relative flex max-h-[min(100dvh,48rem)] w-full flex-col overflow-hidden border-border-subtle bg-surface shadow-2xl',
-					'rounded-t-2xl border-t md:max-w-2xl md:rounded-2xl md:border',
+					'glass-panel relative flex max-h-[min(100dvh,48rem)] w-full flex-col overflow-hidden border shadow-2xl',
+					'rounded-t-2xl md:max-w-2xl md:rounded-2xl',
 				)}
 			>
 				<header className="flex shrink-0 items-center justify-between gap-3 border-b border-border-subtle px-4 py-3 md:px-5">

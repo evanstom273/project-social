@@ -23,6 +23,22 @@ describe('AppRouter', () => {
 		expect(screen.queryByLabelText('Mobile navigation')).not.toBeInTheDocument();
 	});
 
+	it('navigates to a post detail view from the feed', async () => {
+		const user = userEvent.setup();
+
+		renderWithProviders(<AppRouter />, { route: '/?view=following&q=aetheria' });
+
+		await user.click(
+			screen.getByText(/finally locked the directional parry system/i),
+		);
+
+		expect(screen.getByRole('button', { name: /back to feed/i })).toBeInTheDocument();
+		expect(
+			screen.getByText(/finally locked the directional parry system with custom hitstop timing/i),
+		).toBeInTheDocument();
+		expect(screen.getByRole('region', { name: /discussion/i })).toBeInTheDocument();
+	});
+
 	it('navigates to placeholder routes from the sidebar', async () => {
 		const user = userEvent.setup();
 

@@ -15,7 +15,7 @@ export function AppShell({ children, rightRail }: AppShellProps) {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
 	return (
-		<div className="relative h-svh w-full overflow-hidden bg-background text-text-primary">
+		<div className="app-atmosphere relative h-svh w-full overflow-hidden text-text-primary">
 			<ShellHeader onMenuOpen={() => setMobileNavOpen(true)} />
 			<ShellMobileDrawer
 				open={mobileNavOpen}
@@ -25,6 +25,7 @@ export function AppShell({ children, rightRail }: AppShellProps) {
 			{rightRail ? <ShellDiscoveryRail>{rightRail}</ShellDiscoveryRail> : null}
 
 			<main
+				id="app-main-scroll"
 				className={cn(
 					'fixed top-16 bottom-0 z-10 overflow-x-hidden overflow-y-auto overscroll-y-contain',
 					'inset-x-0 md:landscape:left-64 lg:left-64',

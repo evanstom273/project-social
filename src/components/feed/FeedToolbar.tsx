@@ -103,7 +103,7 @@ export function FeedToolbar({
 						value={searchQuery}
 						onChange={(event) => onSearchQueryChange(event.target.value)}
 						placeholder="Search posts, projects, communities..."
-						className="h-10 w-full rounded-xl border border-border-subtle bg-surface-subtle pl-9 pr-4 text-body-sm text-text-primary transition-colors placeholder:text-text-faint hover:border-border-default focus:border-primary focus:outline-none"
+						className="h-10 w-full rounded-xl border border-border-subtle/80 bg-surface-subtle/70 pl-9 pr-4 text-body-sm text-text-primary backdrop-blur-sm transition-colors placeholder:text-text-faint hover:border-border-default focus:border-primary focus:outline-none"
 					/>
 				</label>
 
@@ -137,8 +137,10 @@ export function FeedToolbar({
 							/>
 							<div
 								className={cn(
-									'z-50 border border-border-strong bg-surface-overlay shadow-2xl',
-									'fixed inset-x-0 bottom-0 max-h-[min(85dvh,32rem)] overflow-y-auto rounded-t-2xl p-4 md:absolute md:inset-auto md:bottom-auto md:right-0 md:mt-2 md:max-h-[min(70dvh,28rem)] md:w-[min(22rem,calc(100vw-2rem))] md:rounded-xl md:p-4',
+									'glass-panel z-50 border shadow-2xl',
+									'fixed inset-x-0 bottom-0 max-h-[min(92dvh,calc(100dvh-env(safe-area-inset-bottom)))] overflow-y-auto overscroll-contain rounded-t-2xl p-4 pb-[max(1rem,env(safe-area-inset-bottom))]',
+									'md:absolute md:inset-auto md:bottom-auto md:right-0 md:mt-2 md:max-h-[calc(100dvh-6rem)] md:w-[min(28rem,calc(100vw-2rem))] md:overflow-y-auto md:rounded-xl md:p-5',
+									'lg:w-[min(32rem,calc(100vw-2rem))]',
 								)}
 								role="dialog"
 								aria-label="Feed filters"

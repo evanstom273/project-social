@@ -22,7 +22,7 @@ export function ShellHeader({ onMenuOpen }: ShellHeaderProps) {
 	const { openCompose } = useCompose();
 
 	return (
-		<header className="fixed inset-x-0 top-0 z-40 border-b border-border-subtle bg-surface/90 shadow-[0_1px_12px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+		<header className="glass-surface fixed inset-x-0 top-0 z-40 border-b shadow-[0_1px_12px_rgba(0,0,0,0.5)]">
 			<div className="flex h-16 items-center justify-between px-[var(--spacing-gutter-mobile)] md:px-[var(--spacing-gutter-tablet)] lg:px-[var(--spacing-gutter-desktop)]">
 				<div className="flex min-w-0 items-center gap-3">
 					<button
@@ -70,7 +70,7 @@ export function ShellHeader({ onMenuOpen }: ShellHeaderProps) {
 				<div className="flex shrink-0 items-center gap-2 sm:gap-3">
 					<button
 						type="button"
-						className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-primary px-3 text-label-md font-bold text-on-primary shadow-[0_4px_16px_rgb(94_224_181_/_0.22)] transition-colors hover:bg-primary-hover sm:px-4"
+						className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-primary px-3 text-label-md font-bold text-on-primary accent-glow-primary transition-colors hover:bg-primary-hover sm:px-4"
 						aria-label="New Post"
 						onClick={openCompose}
 					>

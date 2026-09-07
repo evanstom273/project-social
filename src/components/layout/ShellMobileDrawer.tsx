@@ -40,7 +40,7 @@ export function ShellMobileDrawer({ open, onClose }: ShellMobileDrawerProps) {
 				aria-label="Close navigation menu"
 				onClick={onClose}
 			/>
-			<div className="absolute inset-y-0 left-0 flex w-[min(20rem,88vw)] flex-col overflow-hidden border-r border-border-subtle bg-surface shadow-[1px_0_12px_rgba(0,0,0,0.35)]">
+			<div className="glass-panel absolute inset-y-0 left-0 flex w-[min(20rem,88vw)] flex-col overflow-hidden border-r shadow-[1px_0_12px_rgba(0,0,0,0.35)]">
 				<div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain p-6 pb-4">
 					<ShellNavItems onNavigate={onClose} />
 				</div>
