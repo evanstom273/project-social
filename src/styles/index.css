@@ -138,6 +138,13 @@
   padding-top: 1rem;
 }
 
+@media (min-width: 1024px), (min-width: 768px) and (orientation: landscape) {
+  [role='dialog'][aria-label='New project'],
+  [role='dialog'][aria-label='Edit project'] {
+    padding-left: 16rem;
+  }
+}
+
 @layer utilities {
   .text-display-lg {
     font-size: 3rem;
