@@ -7,6 +7,7 @@ export const ROUTES = {
 	saved: '/saved',
 	profile: '/profile',
 	profileSetup: '/auth/profile-setup',
+	authCallback: '/auth/callback',
 	user: (handle: string) => `/users/${handle}`,
 	login: '/auth/login',
 	signup: '/auth/signup',

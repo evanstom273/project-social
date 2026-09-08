@@ -12,7 +12,7 @@ export type AuthContextValue = {
   profile: AuthProfile | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<AuthProfile | null>;
   signUp: (input: { email: string; password: string; handle: string; displayName: string; ageConfirmed: boolean }) => Promise<{ needsEmailConfirmation: boolean }>;
   signOut: () => Promise<void>;
   saveProfile: (input: { handle: string; displayName: string; bio: string; avatarUrl?: string | null }) => Promise<void>;
