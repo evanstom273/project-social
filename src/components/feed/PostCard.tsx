@@ -31,14 +31,9 @@ export function PostCard({ post, feedState }: PostCardProps) {
 			>
 				<div className="mb-3 flex items-start justify-between gap-3">
 					<div className="flex min-w-0 items-start gap-3">
-						<ProjectAvatar
-							initial={post.project.initial}
-							accentClassName={post.project.accentClassName}
-						/>
+						{post.project ? <Link to={ROUTES.project(post.project.id)} onClick={(event) => event.stopPropagation()}><ProjectAvatar initial={post.project.initial} avatarUrl={post.project.avatarUrl} accentClassName={post.project.accentClassName} /></Link> : <ProjectAvatar initial={post.author.displayName.charAt(0)} />}
 						<div className="min-w-0">
-							<p className="truncate text-base font-semibold text-text-primary transition-colors group-hover:text-primary">
-								{post.project.name}
-							</p>
+							{post.project ? <Link to={ROUTES.project(post.project.id)} onClick={(event) => event.stopPropagation()} className="block truncate text-base font-semibold text-text-primary transition-colors hover:text-primary">{post.project.name}</Link> : <p className="truncate text-base font-semibold text-text-primary">{post.author.displayName}</p>}
 							<div className="mt-1 flex flex-wrap items-center gap-2">
 								<PostTypeBadge post={post} compact />
 								<span className="text-caption text-text-faint">{post.postedAgo}</span>

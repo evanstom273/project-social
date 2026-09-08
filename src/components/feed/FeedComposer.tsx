@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import type { PostType } from '@/domain/feed-types';
 import { MAX_VIDEO_DURATION_SECONDS } from '@/config/constants';
 import { useFeedPosts } from '@/app/providers/use-feed-posts';
+import { useProjects } from '@/app/providers/use-projects';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 import { IconClose, IconPlay, IconSend } from '@/components/feed/icons';
@@ -75,12 +76,14 @@ async function readVideoDurationSeconds(file: File): Promise<number> {
 
 export function FeedComposer({ onPublish }: FeedComposerProps) {
 	const { publishPost } = useFeedPosts();
+	const { projects } = useProjects();
 	const [postType, setPostType] = useState<PostType>('update');
 	const [username, setUsername] = useState(readStoredUsername);
 	const [title, setTitle] = useState('');
 	const [body, setBody] = useState('');
 	const [tagsInput, setTagsInput] = useState('');
 	const [projectName, setProjectName] = useState('');
+	const [projectId, setProjectId] = useState<string | null>(null);
 	const [communityName, setCommunityName] = useState('');
 	const [attachedMedia, setAttachedMedia] = useState<AttachedMedia | null>(null);
 	const [mediaError, setMediaError] = useState<string | null>(null);
@@ -148,6 +151,7 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 		setBody('');
 		setTagsInput('');
 		setProjectName('');
+		setProjectId(null);
 		setCommunityName('');
 		clearAttachedMedia();
 		setAiAssisted(false);
@@ -175,6 +179,7 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 				body,
 				tagsInput,
 				projectName,
+				projectId,
 				communityName,
 				aiAssisted,
 				mediaFile: attachedMedia?.file,
@@ -367,13 +372,14 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 						<span className="mb-1.5 block text-label-md font-medium text-text-primary">
 							Link project
 						</span>
-						<input
-							type="text"
-							value={projectName}
-							onChange={(event) => setProjectName(event.target.value)}
-							placeholder="Project name or slug"
+						<select
+							value={projectId ?? ''}
+							onChange={(event) => { const id = event.target.value || null; setProjectId(id); setProjectName(projects.find((project) => project.id === id)?.name ?? ''); }}
 							className="h-11 w-full rounded-xl border border-border-subtle bg-surface-subtle px-3 text-body-md text-text-primary placeholder:text-text-faint focus:border-primary focus:outline-none"
-						/>
+						>
+							<option value="">No project (standalone post)</option>
+							{projects.map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}
+						</select>
 					</label>
 					<label className="block">
 						<span className="mb-1.5 block text-label-md font-medium text-text-primary">

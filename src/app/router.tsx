@@ -23,6 +23,7 @@ function ShellLayout() {
 				<Route path="/create" element={<CreatePage />} />
 				<Route path="/communities" element={<CommunitiesPage />} />
 				<Route path="/projects" element={<ProjectsPage />} />
+				<Route path="/projects/:projectId" element={<ProjectsPage />} />
 				<Route path="/saved" element={<SavedPage />} />
 				<Route path="/profile" element={<ProfilePage />} />
 				<Route path="/auth/login" element={<LoginPage />} />

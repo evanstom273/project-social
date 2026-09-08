@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from '@/app/providers/AuthProvider';
 import { ComposeProvider } from '@/app/providers/ComposeProvider';
 import { FeedPostsProvider } from '@/app/providers/FeedPostsProvider';
+import { ProjectsProvider } from '@/app/providers/ProjectsProvider';
 
 export function renderWithProviders(
   ui: ReactElement,
@@ -14,7 +15,7 @@ export function renderWithProviders(
     <MemoryRouter initialEntries={[route]}>
       <AuthProvider>
         <FeedPostsProvider>
-          <ComposeProvider>{ui}</ComposeProvider>
+          <ProjectsProvider><ComposeProvider>{ui}</ComposeProvider></ProjectsProvider>
         </FeedPostsProvider>
       </AuthProvider>
     </MemoryRouter>,

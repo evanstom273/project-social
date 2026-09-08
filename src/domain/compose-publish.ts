@@ -7,6 +7,7 @@ export type ComposePublishInput = {
 	body: string;
 	tagsInput: string;
 	projectName: string;
+	projectId: string | null;
 	communityName: string;
 	aiAssisted: boolean;
 	mediaFile?: File;

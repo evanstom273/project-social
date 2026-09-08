@@ -1,5 +1,6 @@
 import type { FeedMedia, FeedPost, MediaFilter, PostType } from '@/domain/feed-types';
 import type { ComposePublishInput } from '@/domain/compose-publish';
+import { getProjectById, toFeedProject } from './project-store';
 
 import { localDb, type PublishedPostRecord } from './db';
 
@@ -15,25 +16,11 @@ function normalizeHandle(value: string) {
 	return normalized || 'anonymous';
 }
 
-function slugify(value: string) {
-	const slug = value
-		.trim()
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-|-$/g, '');
-
-	return slug || 'untitled-project';
-}
-
 function parseTags(tagsInput: string) {
 	return tagsInput
 		.split(',')
 		.map((tag) => tag.trim())
 		.filter(Boolean);
-}
-
-function projectInitial(name: string) {
-	return name.trim().charAt(0).toUpperCase() || 'P';
 }
 
 function buildMediaFromBlob(
@@ -82,11 +69,10 @@ function hydratePostMedia(record: PublishedPostRecord): FeedPost {
 	};
 }
 
-function buildFeedPost(input: ComposePublishInput, createdAt: string): PublishedPostRecord {
+async function buildFeedPost(input: ComposePublishInput, createdAt: string): Promise<PublishedPostRecord> {
 	const handle = normalizeHandle(input.username);
 	const displayName = input.username.trim() || handle;
-	const projectName = input.projectName.trim() || 'Untitled Project';
-	const projectSlug = slugify(projectName);
+	const project = input.projectId ? await getProjectById(input.projectId) : undefined;
 	const tags = parseTags(input.tagsInput);
 	const id = crypto.randomUUID();
 
@@ -106,14 +92,7 @@ function buildFeedPost(input: ComposePublishInput, createdAt: string): Published
 	const post: FeedPost = {
 		id,
 		type: input.postType,
-		project: {
-			id: `local-project-${projectSlug}`,
-			slug: projectSlug,
-			name: projectName,
-			category: input.communityName.trim() || 'Personal Project',
-			initial: projectInitial(projectName),
-			accentClassName: 'text-primary',
-		},
+		project: project ? toFeedProject(project) : null,
 		author: {
 			id: `local-author-${handle}`,
 			displayName,
@@ -139,6 +118,7 @@ function buildFeedPost(input: ComposePublishInput, createdAt: string): Published
 			...post,
 			media: undefined,
 		},
+		projectId: project?.id ?? null,
 		mediaBlob: input.mediaFile,
 		mediaMimeType: input.mediaFile?.type,
 		mediaFileName: input.mediaFile?.name,
@@ -147,14 +127,15 @@ function buildFeedPost(input: ComposePublishInput, createdAt: string): Published
 
 export async function savePublishedPost(input: ComposePublishInput): Promise<FeedPost> {
 	const createdAt = new Date().toISOString();
-	const record = buildFeedPost(input, createdAt);
+	const record = await buildFeedPost(input, createdAt);
 	await localDb.publishedPosts.put(record);
 	return hydratePostMedia(record);
 }
 
 export async function listPublishedPosts(): Promise<FeedPost[]> {
 	const records = await localDb.publishedPosts.orderBy('createdAt').reverse().toArray();
-	return records.map(hydratePostMedia);
+	const projects = new Map((await localDb.projects.toArray()).map((project) => [project.id, toFeedProject(project)]));
+	return records.map((record) => hydratePostMedia({ ...record, post: { ...record.post, project: record.projectId ? projects.get(record.projectId) ?? null : null } }));
 }
 
 export async function getPublishedPostById(postId: string): Promise<FeedPost | undefined> {
@@ -163,7 +144,13 @@ export async function getPublishedPostById(postId: string): Promise<FeedPost | u
 		return undefined;
 	}
 
-	return hydratePostMedia(record);
+	const project = record.projectId ? await getProjectById(record.projectId) : undefined;
+	return hydratePostMedia({ ...record, post: { ...record.post, project: project ? toFeedProject(project) : null } });
+}
+
+export async function listPublishedPostsForProject(projectId: string): Promise<FeedPost[]> {
+	const records = (await localDb.publishedPosts.where('projectId').equals(projectId).toArray()).sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+	return records.map(hydratePostMedia);
 }
 
 export async function clearPublishedPosts(): Promise<void> {

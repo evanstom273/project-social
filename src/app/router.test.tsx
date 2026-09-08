@@ -4,11 +4,13 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { AppRouter } from '@/app/router';
 import { clearPublishedPosts } from '@/integrations/local/published-post-store';
+import { clearProjects } from '@/integrations/local/project-store';
 import { renderWithProviders } from '@/test/test-utils';
 
 describe('AppRouter', () => {
 	beforeEach(async () => {
 		await clearPublishedPosts();
+		await clearProjects();
 	});
 
 	it('renders the Stitch shell and empty feed on the home route', async () => {

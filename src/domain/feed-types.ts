@@ -22,6 +22,7 @@ export type FeedProject = {
 	category: string;
 	initial: string;
 	accentClassName?: string;
+	avatarUrl?: string | null;
 };
 
 export type FeedMedia =
@@ -58,7 +59,7 @@ export type FeedMedia =
 export type FeedPost = {
 	id: string;
 	type: PostType;
-	project: FeedProject;
+	project: FeedProject | null;
 	author: FeedAuthor;
 	postedAgo: string;
 	body: string;

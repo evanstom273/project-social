@@ -30,8 +30,8 @@ function matchesSearchQuery(post: FeedPost, query: string) {
 	const haystack = [
 		post.body,
 		post.title,
-		post.project.name,
-		post.project.category,
+		post.project?.name,
+		post.project?.category,
 		post.author.displayName,
 		post.author.handle,
 		post.badge,

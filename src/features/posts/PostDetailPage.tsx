@@ -104,22 +104,16 @@ export function PostDetailPage() {
 				<header className="border-b border-border-subtle/60 p-5">
 					<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 						<div className="flex min-w-0 items-start gap-3">
-							<ProjectAvatar
-								initial={post.project.initial}
-								accentClassName={post.project.accentClassName}
-								size="md"
-							/>
+							<ProjectAvatar initial={post.project?.initial ?? post.author.displayName.charAt(0)} avatarUrl={post.project?.avatarUrl} accentClassName={post.project?.accentClassName} size="md" />
 							<div className="min-w-0">
 								<div className="flex flex-wrap items-center gap-2">
-									<Link
-										to={ROUTES.project(post.project.slug)}
+									{post.project ? <Link
+										to={ROUTES.project(post.project.id)}
 										className="truncate text-headline-sm font-bold text-text-primary transition-colors hover:text-primary"
 									>
 										{post.project.name}
-									</Link>
-									<span className="rounded border border-border-subtle/60 bg-surface-subtle/80 px-2 py-0.5 text-caption text-text-secondary">
-										{post.project.category}
-									</span>
+									</Link> : <span className="text-headline-sm font-bold text-text-primary">{post.author.displayName}</span>}
+									{post.project ? <span className="rounded border border-border-subtle/60 bg-surface-subtle/80 px-2 py-0.5 text-caption text-text-secondary">{post.project.category}</span> : null}
 								</div>
 								<div className="mt-2 flex flex-wrap items-center gap-2 text-caption text-text-muted">
 									<Avatar

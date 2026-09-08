@@ -2,6 +2,7 @@ import { cn } from '@/lib/cn';
 
 type ProjectAvatarProps = {
 	initial: string;
+	avatarUrl?: string | null;
 	accentClassName?: string;
 	size?: 'sm' | 'md';
 	className?: string;
@@ -14,6 +15,7 @@ const sizeClasses: Record<NonNullable<ProjectAvatarProps['size']>, string> = {
 
 export function ProjectAvatar({
 	initial,
+	avatarUrl,
 	accentClassName = 'text-primary',
 	size = 'md',
 	className,
@@ -28,7 +30,7 @@ export function ProjectAvatar({
 			)}
 			aria-hidden="true"
 		>
-			{initial}
+			{avatarUrl ? <img src={avatarUrl} alt="" className="size-full rounded-[inherit] object-cover" /> : initial}
 		</span>
 	);
 }

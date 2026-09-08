@@ -1,5 +1,6 @@
 export type UserId = string;
 export type ProjectId = string;
+export type ProjectStatus = 'in-progress' | 'on-hold' | 'completed';
 export type CommunityId = string;
 export type PostId = string;
 
@@ -18,7 +19,13 @@ export type Project = {
   description: string | null;
   accentColor: string | null;
   avatarUrl: string | null;
-  creatorId: UserId;
+	creatorId: UserId;
+	category: string;
+	technology: string | null;
+	status: ProjectStatus;
+	createdAt: string;
+	updatedAt: string;
+	coverUrl: string | null;
 };
 
 export type Community = {

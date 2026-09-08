@@ -8,7 +8,7 @@ export const ROUTES = {
 	profile: '/profile',
 	login: '/auth/login',
 	signup: '/auth/signup',
-	project: (slug: string) => `/p/${slug}`,
+	project: (id: string) => `/projects/${id}`,
 	community: (slug: string) => `/c/${slug}`,
 	post: (postId: string) => `/posts/${postId}`,
 } as const;
