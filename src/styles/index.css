@@ -116,6 +116,28 @@
   }
 }
 
+/* Keep the project form usable when the mobile keyboard or a short Fold viewport is open. */
+[role='dialog'][aria-label='New project'] > .panel-solid,
+[role='dialog'][aria-label='Edit project'] > .panel-solid {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+[role='dialog'][aria-label='New project'] > .panel-solid > .grid,
+[role='dialog'][aria-label='Edit project'] > .panel-solid > .grid {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+[role='dialog'][aria-label='New project'] > .panel-solid > .mt-6,
+[role='dialog'][aria-label='Edit project'] > .panel-solid > .mt-6 {
+  flex-shrink: 0;
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: 1rem;
+}
+
 @layer utilities {
   .text-display-lg {
     font-size: 3rem;
