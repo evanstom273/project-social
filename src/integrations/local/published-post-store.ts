@@ -11,11 +11,6 @@ const TYPE_BADGES: Record<PostType, string> = {
 	milestone: 'Milestone',
 };
 
-function normalizeHandle(value: string) {
-	const normalized = value.trim().replace(/^@/, '').replace(/\s+/g, '_').toLowerCase();
-	return normalized || 'anonymous';
-}
-
 function parseTags(tagsInput: string) {
 	return tagsInput
 		.split(',')
@@ -70,8 +65,8 @@ function hydratePostMedia(record: PublishedPostRecord): FeedPost {
 }
 
 async function buildFeedPost(input: ComposePublishInput, createdAt: string): Promise<PublishedPostRecord> {
-	const handle = normalizeHandle(input.username);
-	const displayName = input.username.trim() || handle;
+	const handle = 'local_user';
+	const displayName = 'Local user';
 	const project = input.projectId ? await getProjectById(input.projectId) : undefined;
 	const tags = parseTags(input.tagsInput);
 	const id = crypto.randomUUID();

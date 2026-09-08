@@ -7,7 +7,6 @@ import { useProjects } from '@/app/providers/use-projects';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 import { IconClose, IconPlay, IconSend } from '@/components/feed/icons';
-import { useAuth } from '@/app/providers/auth-context';
 
 type FeedComposerProps = {
 	onPublish?: () => void;
@@ -68,9 +67,7 @@ async function readVideoDurationSeconds(file: File): Promise<number> {
 export function FeedComposer({ onPublish }: FeedComposerProps) {
 	const { publishPost } = useFeedPosts();
 	const { projects } = useProjects();
-	const { profile } = useAuth();
 	const [postType, setPostType] = useState<PostType>('update');
-	const username = profile?.handle ?? '';
 	const [title, setTitle] = useState('');
 	const [body, setBody] = useState('');
 	const [tagsInput, setTagsInput] = useState('');
@@ -82,7 +79,6 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 	const [publishError, setPublishError] = useState<string | null>(null);
 	const [aiAssisted, setAiAssisted] = useState(false);
 	const [isPublishing, setIsPublishing] = useState(false);
-	const displayHandle = username ? `@${username}` : '@your_handle';
 
 	useEffect(() => {
 		return () => {
@@ -159,7 +155,6 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 		try {
 			await publishPost({
 				postType,
-				username: profile?.handle ?? '',
 				title,
 				body,
 				tagsInput,
@@ -205,36 +200,6 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 						</button>
 					))}
 				</div>
-
-				<section className="rounded-xl border border-border-subtle bg-surface-subtle/70 p-4">
-					<p className="mb-3 text-label-sm text-text-faint">Posting identity</p>
-					<p className="mb-3 text-body-sm text-text-muted">
-						No accounts yet — set a temporary name for this post. It is saved locally until auth
-						exists.
-					</p>
-					<div className="grid gap-3 sm:grid-cols-2">
-						<label className="block">
-							<span className="mb-1.5 block text-caption font-medium text-text-secondary">
-								Username
-							</span>
-							<input
-								type="text"
-								value={username}
-								readOnly
-								aria-readonly="true"
-								placeholder="e.g. maker_alex"
-								autoComplete="off"
-								className="h-11 w-full rounded-xl border border-border-subtle bg-surface px-3 text-body-md text-text-primary placeholder:text-text-faint focus:border-primary focus:outline-none"
-							/>
-						</label>
-						<div className="flex flex-col justify-end">
-							<p className="mb-1.5 text-caption font-medium text-text-secondary">Preview</p>
-							<p className="rounded-xl border border-border-subtle/70 bg-surface px-3 py-2.5 text-body-md text-text-primary">
-								{displayHandle}
-							</p>
-						</div>
-					</div>
-				</section>
 
 				<label className="block">
 					<span className="mb-1.5 block text-label-md font-medium text-text-primary">

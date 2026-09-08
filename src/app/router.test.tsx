@@ -39,7 +39,8 @@ describe('AppRouter', () => {
 		await user.click(screen.getByRole('button', { name: /^new post$/i }));
 
 		expect(screen.getByRole('dialog', { name: /new post/i })).toBeInTheDocument();
-		expect(screen.getByText(/posting identity/i)).toBeInTheDocument();
+		expect(screen.queryByText(/posting identity/i)).not.toBeInTheDocument();
+		expect(screen.queryByLabelText(/^username$/i)).not.toBeInTheDocument();
 		expect(screen.getByLabelText(/^description$/i)).toBeInTheDocument();
 	});
 
