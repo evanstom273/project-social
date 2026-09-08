@@ -14,7 +14,6 @@ export type AuthContextValue = {
   isAuthenticated: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (input: { email: string; password: string; handle: string; displayName: string; ageConfirmed: boolean }) => Promise<{ needsEmailConfirmation: boolean }>;
-  signInWithProvider: (provider: 'google' | 'github') => Promise<void>;
   signOut: () => Promise<void>;
   saveProfile: (input: { handle: string; displayName: string; bio: string; avatarUrl?: string | null }) => Promise<void>;
 };
