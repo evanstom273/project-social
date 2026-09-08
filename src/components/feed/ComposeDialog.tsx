@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { MOCK_CURRENT_USER } from '@/data/feed-mock';
 import { FeedComposer } from '@/components/feed/FeedComposer';
 import { IconClose } from '@/components/feed/icons';
 import { cn } from '@/lib/cn';
@@ -37,7 +36,7 @@ export function ComposeDialog({ open, onClose }: ComposeDialogProps) {
 
 	return (
 		<div
-			className="fixed inset-0 z-50 flex items-end justify-center md:items-center md:p-6"
+			className="fixed inset-0 z-50 flex flex-col md:items-center md:justify-center md:p-6 lg:p-8"
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="compose-dialog-title"
@@ -50,28 +49,26 @@ export function ComposeDialog({ open, onClose }: ComposeDialogProps) {
 			/>
 			<div
 				className={cn(
-					'panel-solid relative flex max-h-[min(100dvh,48rem)] w-full flex-col overflow-hidden border shadow-2xl',
-					'rounded-t-2xl md:max-w-2xl md:rounded-2xl',
+					'panel-solid relative flex h-[100dvh] w-full flex-col overflow-hidden border shadow-2xl',
+					'md:h-auto md:max-h-[min(94dvh,56rem)] md:min-h-[min(78dvh,44rem)]',
+					'md:max-w-3xl md:rounded-2xl lg:max-w-4xl',
 				)}
 			>
-				<header className="flex shrink-0 items-center justify-between gap-3 border-b border-border-subtle px-4 py-3 md:px-5">
+				<header className="flex shrink-0 items-center justify-between gap-3 border-b border-border-subtle px-4 py-3.5 md:px-6">
 					<h2 id="compose-dialog-title" className="text-headline-sm font-bold text-text-primary">
 						New Post
 					</h2>
 					<button
 						type="button"
-						className="flex size-9 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary"
+						className="flex size-10 items-center justify-center rounded-xl border border-border-subtle bg-surface-raised text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary"
 						aria-label="Close composer"
 						onClick={onClose}
 					>
 						<IconClose className="size-[18px]" />
 					</button>
 				</header>
-				<div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain p-4 md:p-5">
-					<FeedComposer
-						currentUser={MOCK_CURRENT_USER}
-						onPublish={onClose}
-					/>
+				<div className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 md:px-6 md:pb-6 md:pt-5">
+					<FeedComposer onPublish={onClose} />
 				</div>
 			</div>
 		</div>
