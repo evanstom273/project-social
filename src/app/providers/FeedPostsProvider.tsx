@@ -3,7 +3,7 @@ import { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react
 import type { FeedPost } from '@/domain/feed-types';
 import type { ComposePublishInput } from '@/domain/compose-publish';
 import { FeedPostsContext } from '@/app/providers/feed-posts-context';
-import { createRemotePost, listRemotePosts } from '@/data/remote-posts';
+import { createRemotePost, deleteRemotePost, listRemotePosts, updateRemotePost } from '@/data/remote-posts';
 import { useAuth } from './auth-context';
 
 type FeedPostsProviderProps = {
@@ -50,6 +50,19 @@ export function FeedPostsProvider({ children }: FeedPostsProviderProps) {
 		return post;
 	}, [user]);
 
+	const updatePost = useCallback(async (postId: string, input: { title: string; body: string; tagsInput: string }) => {
+		if (!user) throw new Error('Sign in to edit a post.');
+		const post = await updateRemotePost(postId, input);
+		setPosts((current) => current.map((item) => item.id === postId ? post : item));
+		return post;
+	}, [user]);
+
+	const deletePost = useCallback(async (postId: string) => {
+		if (!user) throw new Error('Sign in to delete a post.');
+		await deleteRemotePost(postId);
+		setPosts((current) => current.filter((item) => item.id !== postId));
+	}, [user]);
+
 	const getPostById = useCallback(
 		(postId: string) => posts.find((post) => post.id === postId),
 		[posts],
@@ -60,10 +73,12 @@ export function FeedPostsProvider({ children }: FeedPostsProviderProps) {
 			posts,
 			isLoading,
 			publishPost,
+			updatePost,
+			deletePost,
 			getPostById,
 			refreshPosts,
 		}),
-		[posts, isLoading, publishPost, getPostById, refreshPosts],
+		[posts, isLoading, publishPost, updatePost, deletePost, getPostById, refreshPosts],
 	);
 
 	return <FeedPostsContext.Provider value={value}>{children}</FeedPostsContext.Provider>;

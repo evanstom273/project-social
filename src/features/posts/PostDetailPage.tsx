@@ -8,6 +8,7 @@ import { ROUTES } from '@/config/constants';
 import { PostActions } from '@/components/feed/PostActions';
 import { PostMedia } from '@/components/feed/PostMedia';
 import { PostTypeBadge } from '@/components/feed/PostTypeBadge';
+import { PostOwnerControls } from '@/components/feed/PostOwnerControls';
 import { Avatar } from '@/components/ui/Avatar';
 import { ProjectAvatar } from '@/components/ui/ProjectAvatar';
 import { IconChevronLeft } from '@/components/feed/icons';
@@ -126,14 +127,16 @@ export function PostDetailPage() {
 										{post.author.displayName}
 									</span>
 									<span className="text-text-faint">@{post.author.handle}</span>
-									<span className="size-1 rounded-full bg-text-faint" aria-hidden="true" />
-									<span className="text-text-faint">{post.postedAgo}</span>
+					<span className="size-1 rounded-full bg-text-faint" aria-hidden="true" />
+					<span className="text-text-faint">{post.postedAgo}</span>
+					{post.edited ? <span className="text-text-faint">Edited</span> : null}
 								</div>
 							</div>
 						</div>
 						<div className="flex flex-wrap items-center gap-2">
 							<PostTypeBadge post={post} />
 							<FollowProjectButton />
+							<PostOwnerControls post={post} onDeleted={() => navigate(returnTo, { replace: true })} />
 						</div>
 					</div>
 				</header>

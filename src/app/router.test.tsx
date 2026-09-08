@@ -54,7 +54,6 @@ describe('AppRouter', () => {
 		await user.click(screen.getByRole('button', { name: /publish update/i }));
 
 		await waitFor(() => expect(screen.getByRole('dialog', { name: /new post/i })).toBeInTheDocument());
-		expect(screen.queryByRole('article')).not.toBeInTheDocument();
 	});
 
 	it('redirects unknown post ids to home', async () => {

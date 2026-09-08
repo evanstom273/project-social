@@ -1,4 +1,5 @@
-import type { FeedPost } from '@/domain/feed-types';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import type { FeedMedia, FeedPost } from '@/domain/feed-types';
 import { cn } from '@/lib/cn';
 import { IconDownload, IconPlay } from '@/components/feed/icons';
 
@@ -7,24 +8,80 @@ type PostMediaProps = {
 	variant?: 'feed' | 'detail';
 };
 
+type LightboxMedia = Extract<FeedMedia, { kind: 'image' | 'video' }>;
+
+function MediaLightbox({ media, onClose }: { media: LightboxMedia; onClose: () => void }) {
+	const videoRef = useRef<HTMLVideoElement>(null);
+
+	useEffect(() => {
+		function handleKeyDown(event: KeyboardEvent) {
+			if (event.key === 'Escape') onClose();
+		}
+		document.addEventListener('keydown', handleKeyDown);
+		document.body.style.overflow = 'hidden';
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+			document.body.style.overflow = '';
+		};
+	}, [onClose]);
+
+	function enterFullscreen() {
+		void videoRef.current?.requestFullscreen?.();
+	}
+
+	return (
+		<div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Full-screen media" onClick={onClose}>
+			<button type="button" className="absolute inset-0 cursor-default" aria-label="Close full-screen media" onClick={onClose} />
+			<div className="relative z-10 flex max-h-full max-w-full items-center justify-center" onClick={(event) => event.stopPropagation()}>
+				{media.kind === 'video' ? (
+					<div className="relative max-h-[90vh] max-w-[95vw]">
+						<video ref={videoRef} src={media.imageUrl} aria-label={media.alt} className="max-h-[90vh] max-w-[95vw] rounded-xl object-contain" controls autoPlay playsInline />
+						<button type="button" className="absolute right-3 top-3 rounded-lg border border-white/20 bg-black/70 px-3 py-1.5 text-caption text-white hover:bg-black/90" onClick={enterFullscreen}>Full screen</button>
+					</div>
+				) : (
+					<img src={media.imageUrl} alt={media.alt} className="max-h-[90vh] max-w-[95vw] rounded-xl object-contain" />
+				)}
+				<button type="button" className="absolute -right-2 -top-12 flex size-9 items-center justify-center rounded-full border border-white/20 bg-black/70 text-xl text-white hover:bg-black/90 sm:-right-12 sm:top-0" aria-label="Close full-screen media" onClick={onClose}>×</button>
+			</div>
+		</div>
+	);
+}
+
 export function PostMedia({ post, variant = 'feed' }: PostMediaProps) {
+	const [isOpen, setIsOpen] = useState(false);
+
 	if (!post.media) {
 		return null;
 	}
 
 	const isFeed = variant === 'feed';
+	const openMedia = (event: MouseEvent) => {
+		event.preventDefault();
+		event.stopPropagation();
+		setIsOpen(true);
+	};
+	const closeMedia = () => setIsOpen(false);
 
 	if (post.media.kind === 'video') {
 		return (
+			<>
 			<div
 				className={cn(
 					'group relative w-full overflow-hidden rounded-xl border border-border-subtle/80 bg-surface-subtle/60',
 					isFeed ? 'aspect-[16/10]' : 'aspect-video',
 				)}
+				onClick={openMedia}
+				onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); setIsOpen(true); } }}
+				role="button"
+				tabIndex={0}
+				aria-label={`Play ${post.media.alt}`}
 			>
-				<img
+				<video
 					src={post.media.imageUrl}
-					alt={post.media.alt}
+					aria-label={post.media.alt}
+					muted
+					playsInline
+					preload="metadata"
 					className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
 				/>
 				<div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/10" />
@@ -50,16 +107,24 @@ export function PostMedia({ post, variant = 'feed' }: PostMediaProps) {
 					</div>
 				) : null}
 			</div>
+			{isOpen ? <MediaLightbox media={post.media} onClose={closeMedia} /> : null}
+			</>
 		);
 	}
 
 	if (post.media.kind === 'image') {
 		return (
+			<>
 			<div
 				className={cn(
 					'group relative w-full overflow-hidden rounded-xl border border-border-subtle/80 bg-surface-subtle/60',
 					isFeed ? 'aspect-[16/10]' : 'aspect-video',
 				)}
+				onClick={openMedia}
+				onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); setIsOpen(true); } }}
+				role="button"
+				tabIndex={0}
+				aria-label={`Open ${post.media.alt} full screen`}
 			>
 				<img
 					src={post.media.imageUrl}
@@ -73,6 +138,8 @@ export function PostMedia({ post, variant = 'feed' }: PostMediaProps) {
 					</div>
 				) : null}
 			</div>
+			{isOpen ? <MediaLightbox media={post.media} onClose={closeMedia} /> : null}
+			</>
 		);
 	}
 
