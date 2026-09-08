@@ -5,6 +5,7 @@ import { ROUTES } from '@/config/constants';
 import { PostActions } from '@/components/feed/PostActions';
 import { PostMedia } from '@/components/feed/PostMedia';
 import { PostTypeBadge } from '@/components/feed/PostTypeBadge';
+import { PostOwnerControls } from '@/components/feed/PostOwnerControls';
 import { ProjectAvatar } from '@/components/ui/ProjectAvatar';
 import { saveCurrentFeedScrollPosition } from '@/lib/feed-scroll';
 import { feedLocationSearch, type FeedSearchState } from '@/features/home/feed-search-params';
@@ -37,9 +38,11 @@ export function PostCard({ post, feedState }: PostCardProps) {
 							<div className="mt-1 flex flex-wrap items-center gap-2">
 								<PostTypeBadge post={post} compact />
 								<span className="text-caption text-text-faint">{post.postedAgo}</span>
+								{post.edited ? <span className="text-caption text-text-faint">Edited</span> : null}
 							</div>
 						</div>
 					</div>
+					<PostOwnerControls post={post} />
 				</div>
 
 				{post.title ? (

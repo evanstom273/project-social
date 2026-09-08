@@ -71,6 +71,7 @@ export type FeedPost = {
 	comments: number;
 	commentLabel?: string;
 	mediaFilter: MediaFilter;
+	edited?: boolean;
 };
 
 export type SidebarProject = {
