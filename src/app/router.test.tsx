@@ -6,7 +6,7 @@ import { AppRouter } from '@/app/router';
 import { renderWithProviders } from '@/test/test-utils';
 
 describe('AppRouter', () => {
-	it('renders the Stitch shell and feed on the home route', () => {
+	it('renders the Stitch shell and empty feed on the home route', () => {
 		renderWithProviders(<AppRouter />, { route: '/' });
 
 		expect(screen.getByRole('heading', { name: /^feed$/i })).toBeInTheDocument();
@@ -14,7 +14,7 @@ describe('AppRouter', () => {
 		expect(screen.getByRole('button', { name: /^new post$/i })).toBeInTheDocument();
 		expect(screen.getByLabelText(/search feed/i)).toBeInTheDocument();
 		expect(screen.queryByLabelText(/create post/i)).not.toBeInTheDocument();
-		expect(screen.getByText(/aetheria: chrono echoes/i)).toBeInTheDocument();
+		expect(screen.getByText(/nothing in the feed yet/i)).toBeInTheDocument();
 
 		expect(screen.getByLabelText('Open navigation menu')).toBeInTheDocument();
 		expect(screen.getByLabelText('Sidebar navigation')).toBeInTheDocument();
@@ -23,20 +23,23 @@ describe('AppRouter', () => {
 		expect(screen.queryByLabelText('Mobile navigation')).not.toBeInTheDocument();
 	});
 
-	it('navigates to a post detail view from the feed', async () => {
+	it('opens the expanded composer from New Post', async () => {
 		const user = userEvent.setup();
 
-		renderWithProviders(<AppRouter />, { route: '/?view=following&q=aetheria' });
+		renderWithProviders(<AppRouter />, { route: '/' });
 
-		await user.click(
-			screen.getByText(/finally locked the directional parry system/i),
-		);
+		await user.click(screen.getByRole('button', { name: /^new post$/i }));
 
-		expect(screen.getByRole('button', { name: /back to feed/i })).toBeInTheDocument();
-		expect(
-			screen.getByText(/finally locked the directional parry system with custom hitstop timing/i),
-		).toBeInTheDocument();
-		expect(screen.getByRole('region', { name: /discussion/i })).toBeInTheDocument();
+		expect(screen.getByRole('dialog', { name: /new post/i })).toBeInTheDocument();
+		expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
+		expect(screen.getByLabelText(/^description$/i)).toBeInTheDocument();
+	});
+
+	it('redirects unknown post ids to home', () => {
+		renderWithProviders(<AppRouter />, { route: '/posts/unknown-post' });
+
+		expect(screen.getByRole('heading', { name: /^feed$/i })).toBeInTheDocument();
+		expect(screen.getByText(/nothing in the feed yet/i)).toBeInTheDocument();
 	});
 
 	it('navigates to placeholder routes from the sidebar', async () => {
