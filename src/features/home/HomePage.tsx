@@ -3,7 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 
 import type { MediaFilter, PostType } from '@/domain/feed-types';
 import type { FeedFilterMode, FeedSortMode } from '@/domain/types';
-import { listMockFeedPosts } from '@/data/feed-mock';
+import type { FeedPost } from '@/domain/feed-types';
+import { useFeedPosts } from '@/app/providers/use-feed-posts';
 import { FeedHeader } from '@/components/feed/FeedHeader';
 import { FeedToolbar } from '@/components/feed/FeedToolbar';
 import { PostCard } from '@/components/feed/PostCard';
@@ -20,7 +21,7 @@ import {
 	readFeedScrollPosition,
 } from '@/lib/feed-scroll';
 
-function matchesSearchQuery(post: ReturnType<typeof listMockFeedPosts>[number], query: string) {
+function matchesSearchQuery(post: FeedPost, query: string) {
 	const normalizedQuery = query.trim().toLowerCase();
 	if (!normalizedQuery) {
 		return true;
@@ -43,7 +44,7 @@ function matchesSearchQuery(post: ReturnType<typeof listMockFeedPosts>[number], 
 	return haystack.includes(normalizedQuery);
 }
 
-function sortPosts(posts: ReturnType<typeof listMockFeedPosts>, sortMode: FeedSortMode) {
+function sortPosts(posts: FeedPost[], sortMode: FeedSortMode) {
 	if (sortMode === 'newest') {
 		return posts;
 	}
@@ -57,8 +58,8 @@ function sortPosts(posts: ReturnType<typeof listMockFeedPosts>, sortMode: FeedSo
 	return sorted.sort((left, right) => right.likes - left.likes);
 }
 
-function filterPosts(state: FeedSearchState) {
-	const filtered = listMockFeedPosts().filter((post) => {
+function filterPosts(allPosts: FeedPost[], state: FeedSearchState) {
+	const filtered = allPosts.filter((post) => {
 		if (state.filterMode === 'following') {
 			return false;
 		}
@@ -114,10 +115,13 @@ function hasActiveFilters(state: FeedSearchState) {
 
 export function HomePage() {
 	const [searchParams, setSearchParams] = useSearchParams();
+	const { posts: allPosts, isLoading } = useFeedPosts();
 	const feedState = useMemo(() => parseFeedSearchParams(searchParams), [searchParams]);
-	const allPosts = listMockFeedPosts();
 
-	const posts = useMemo(() => filterPosts(feedState), [feedState]);
+	const posts = useMemo(
+		() => filterPosts(allPosts, feedState),
+		[allPosts, feedState],
+	);
 	const feedIsEmpty = allPosts.length === 0;
 	const filtersActive = hasActiveFilters(feedState);
 
@@ -178,10 +182,14 @@ export function HomePage() {
 					<IconHoneycomb className="size-6 text-primary" />
 					<p className="text-body-md text-text-secondary">Nothing in the feed yet.</p>
 					<p className="max-w-sm text-body-sm text-text-muted">
-						Use New Post to share what you are making. Posts will appear here once
-						publishing is connected.
+						Use New Post to share what you are making. Published posts are saved locally in
+						your browser for now.
 					</p>
 				</div>
+			) : null}
+
+			{isLoading && feedIsEmpty ? (
+				<p className="py-12 text-center text-body-md text-text-muted">Loading feed…</p>
 			) : null}
 
 			{posts.length === 0 && (filtersActive || !feedIsEmpty) ? (
