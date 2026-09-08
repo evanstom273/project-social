@@ -1,13 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { PostType } from '@/domain/feed-types';
 import { MAX_VIDEO_DURATION_SECONDS } from '@/config/constants';
+import { useFeedPosts } from '@/app/providers/use-feed-posts';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
-import { IconSend } from '@/components/feed/icons';
+import { IconClose, IconPlay, IconSend } from '@/components/feed/icons';
 
 type FeedComposerProps = {
 	onPublish?: () => void;
+};
+
+type AttachedMedia = {
+	file: File;
+	previewUrl: string;
+	kind: 'image' | 'video';
 };
 
 const POST_TYPES: Array<{ id: PostType; label: string; tabClass?: string }> = [
@@ -48,7 +55,26 @@ function normalizeHandle(value: string) {
 	return value.trim().replace(/^@/, '').replace(/\s+/g, '_').toLowerCase();
 }
 
+async function readVideoDurationSeconds(file: File): Promise<number> {
+	return new Promise((resolve, reject) => {
+		const video = document.createElement('video');
+		const url = URL.createObjectURL(file);
+
+		video.preload = 'metadata';
+		video.onloadedmetadata = () => {
+			URL.revokeObjectURL(url);
+			resolve(Number.isFinite(video.duration) ? video.duration : 0);
+		};
+		video.onerror = () => {
+			URL.revokeObjectURL(url);
+			reject(new Error('Could not read video metadata'));
+		};
+		video.src = url;
+	});
+}
+
 export function FeedComposer({ onPublish }: FeedComposerProps) {
+	const { publishPost } = useFeedPosts();
 	const [postType, setPostType] = useState<PostType>('update');
 	const [username, setUsername] = useState(readStoredUsername);
 	const [title, setTitle] = useState('');
@@ -56,25 +82,111 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 	const [tagsInput, setTagsInput] = useState('');
 	const [projectName, setProjectName] = useState('');
 	const [communityName, setCommunityName] = useState('');
-	const [attachedMediaLabel, setAttachedMediaLabel] = useState<string | null>(null);
+	const [attachedMedia, setAttachedMedia] = useState<AttachedMedia | null>(null);
+	const [mediaError, setMediaError] = useState<string | null>(null);
+	const [publishError, setPublishError] = useState<string | null>(null);
 	const [aiAssisted, setAiAssisted] = useState(false);
+	const [isPublishing, setIsPublishing] = useState(false);
 
 	const handle = normalizeHandle(username);
 	const displayHandle = handle ? `@${handle}` : '@your_handle';
 
-	function handlePublish() {
-		if (username.trim()) {
-			sessionStorage.setItem(USERNAME_STORAGE_KEY, username.trim());
+	useEffect(() => {
+		return () => {
+			if (attachedMedia) {
+				URL.revokeObjectURL(attachedMedia.previewUrl);
+			}
+		};
+	}, [attachedMedia]);
+
+	function clearAttachedMedia() {
+		setAttachedMedia((current) => {
+			if (current) {
+				URL.revokeObjectURL(current.previewUrl);
+			}
+			return null;
+		});
+		setMediaError(null);
+	}
+
+	async function handleMediaSelection(fileList: FileList | null) {
+		const file = fileList?.[0];
+		if (!file) {
+			return;
 		}
 
+		setMediaError(null);
+
+		if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+			setMediaError('Choose an image or video file.');
+			return;
+		}
+
+		if (file.type.startsWith('video/')) {
+			try {
+				const durationSeconds = await readVideoDurationSeconds(file);
+				if (durationSeconds > MAX_VIDEO_DURATION_SECONDS) {
+					setMediaError(`Video must be ${MAX_VIDEO_DURATION_SECONDS} seconds or shorter.`);
+					return;
+				}
+			} catch {
+				setMediaError('Could not read that video file.');
+				return;
+			}
+		}
+
+		clearAttachedMedia();
+		setAttachedMedia({
+			file,
+			previewUrl: URL.createObjectURL(file),
+			kind: file.type.startsWith('video/') ? 'video' : 'image',
+		});
+	}
+
+	function resetForm() {
 		setTitle('');
 		setBody('');
 		setTagsInput('');
 		setProjectName('');
 		setCommunityName('');
-		setAttachedMediaLabel(null);
+		clearAttachedMedia();
 		setAiAssisted(false);
-		onPublish?.();
+		setPublishError(null);
+	}
+
+	async function handlePublish() {
+		if (!body.trim() && !title.trim()) {
+			setPublishError('Add a title or description before publishing.');
+			return;
+		}
+
+		setPublishError(null);
+		setIsPublishing(true);
+
+		try {
+			if (username.trim()) {
+				sessionStorage.setItem(USERNAME_STORAGE_KEY, username.trim());
+			}
+
+			await publishPost({
+				postType,
+				username,
+				title,
+				body,
+				tagsInput,
+				projectName,
+				communityName,
+				aiAssisted,
+				mediaFile: attachedMedia?.file,
+			});
+
+			resetForm();
+			onPublish?.();
+		} catch {
+			setPublishError('Could not publish this post locally. Try again.');
+		} finally {
+			setIsPublishing(false);
+		}
 	}
 
 	return (
@@ -107,7 +219,8 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 				<section className="rounded-xl border border-border-subtle bg-surface-subtle/70 p-4">
 					<p className="mb-3 text-label-sm text-text-faint">Posting identity</p>
 					<p className="mb-3 text-body-sm text-text-muted">
-						No accounts yet — set a temporary name for this post. It is not saved to a profile.
+						No accounts yet — set a temporary name for this post. It is saved locally until auth
+						exists.
 					</p>
 					<div className="grid gap-3 sm:grid-cols-2">
 						<label className="block">
@@ -186,28 +299,66 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 							Max {MAX_VIDEO_DURATION_SECONDS}s video
 						</span>
 					</div>
-					<label className="flex min-h-[8rem] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-border-subtle bg-surface px-4 py-6 text-center transition-colors hover:border-primary/40 hover:bg-surface-hover/40">
-						<span className="text-2xl text-primary">+</span>
-						<span className="text-body-sm font-medium text-text-secondary">
-							Choose images or video
-						</span>
-						<span className="text-caption text-text-faint">
-							Drag and drop or tap to browse (mock — not uploaded yet)
-						</span>
-						<input
-							type="file"
-							accept="image/*,video/*"
-							className="sr-only"
-							onChange={(event) => {
-								const file = event.target.files?.[0];
-								setAttachedMediaLabel(file ? file.name : null);
-							}}
-						/>
-					</label>
-					{attachedMediaLabel ? (
-						<p className="mt-3 text-body-sm text-primary">
-							Selected: {attachedMediaLabel}
-						</p>
+
+					{attachedMedia ? (
+						<div className="relative overflow-hidden rounded-xl border border-border-subtle bg-surface">
+							{attachedMedia.kind === 'image' ? (
+								<img
+									src={attachedMedia.previewUrl}
+									alt={attachedMedia.file.name}
+									className="max-h-72 w-full object-cover"
+								/>
+							) : (
+								<div className="relative">
+									<video
+										src={attachedMedia.previewUrl}
+										className="max-h-72 w-full bg-black object-contain"
+										controls
+										playsInline
+									/>
+									<div className="pointer-events-none absolute right-3 top-3 flex items-center gap-1 rounded-md border border-border-subtle/80 bg-background/80 px-2 py-0.5 text-caption text-text-primary backdrop-blur-sm">
+										<IconPlay className="size-3.5 text-primary" />
+										Video
+									</div>
+								</div>
+							)}
+							<div className="flex items-center justify-between gap-3 border-t border-border-subtle px-3 py-2">
+								<p className="truncate text-body-sm text-text-secondary">
+									{attachedMedia.file.name}
+								</p>
+								<button
+									type="button"
+									className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg border border-border-subtle text-text-muted transition-colors hover:bg-surface-hover hover:text-text-primary"
+									aria-label="Remove attachment"
+									onClick={clearAttachedMedia}
+								>
+									<IconClose className="size-4" />
+								</button>
+							</div>
+						</div>
+					) : (
+						<label className="flex min-h-[8rem] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-border-subtle bg-surface px-4 py-6 text-center transition-colors hover:border-primary/40 hover:bg-surface-hover/40">
+							<span className="text-2xl text-primary">+</span>
+							<span className="text-body-sm font-medium text-text-secondary">
+								Choose images or video
+							</span>
+							<span className="text-caption text-text-faint">
+								Drag and drop or tap to browse
+							</span>
+							<input
+								type="file"
+								accept="image/*,video/*"
+								className="sr-only"
+								onChange={(event) => {
+									void handleMediaSelection(event.target.files);
+									event.target.value = '';
+								}}
+							/>
+						</label>
+					)}
+
+					{mediaError ? (
+						<p className="mt-3 text-body-sm text-error">{mediaError}</p>
 					) : null}
 				</section>
 
@@ -247,15 +398,18 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 					/>
 					Contains AI-assisted work
 				</label>
+
+				{publishError ? <p className="text-body-sm text-error">{publishError}</p> : null}
 			</div>
 
 			<div className="shrink-0 border-t border-border-subtle bg-surface-overlay/80 pt-4 backdrop-blur-sm">
 				<Button
 					type="button"
+					disabled={isPublishing}
 					className="h-11 w-full gap-2 px-4 text-label-md font-bold shadow-sm active:scale-[0.99] sm:w-auto"
-					onClick={handlePublish}
+					onClick={() => void handlePublish()}
 				>
-					{PUBLISH_LABELS[postType]}
+					{isPublishing ? 'Publishing…' : PUBLISH_LABELS[postType]}
 					<IconSend className="size-4" />
 				</Button>
 			</div>

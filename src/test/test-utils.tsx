@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { AuthProvider } from '@/app/providers/AuthProvider';
 import { ComposeProvider } from '@/app/providers/ComposeProvider';
+import { FeedPostsProvider } from '@/app/providers/FeedPostsProvider';
 
 export function renderWithProviders(
   ui: ReactElement,
@@ -12,7 +13,9 @@ export function renderWithProviders(
   return render(
     <MemoryRouter initialEntries={[route]}>
       <AuthProvider>
-        <ComposeProvider>{ui}</ComposeProvider>
+        <FeedPostsProvider>
+          <ComposeProvider>{ui}</ComposeProvider>
+        </FeedPostsProvider>
       </AuthProvider>
     </MemoryRouter>,
   );

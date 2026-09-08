@@ -1,12 +1,17 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { AppRouter } from '@/app/router';
+import { clearPublishedPosts } from '@/integrations/local/published-post-store';
 import { renderWithProviders } from '@/test/test-utils';
 
 describe('AppRouter', () => {
-	it('renders the Stitch shell and empty feed on the home route', () => {
+	beforeEach(async () => {
+		await clearPublishedPosts();
+	});
+
+	it('renders the Stitch shell and empty feed on the home route', async () => {
 		renderWithProviders(<AppRouter />, { route: '/' });
 
 		expect(screen.getByRole('heading', { name: /^feed$/i })).toBeInTheDocument();
@@ -14,7 +19,8 @@ describe('AppRouter', () => {
 		expect(screen.getByRole('button', { name: /^new post$/i })).toBeInTheDocument();
 		expect(screen.getByLabelText(/search feed/i)).toBeInTheDocument();
 		expect(screen.queryByLabelText(/create post/i)).not.toBeInTheDocument();
-		expect(screen.getByText(/nothing in the feed yet/i)).toBeInTheDocument();
+
+		expect(await screen.findByText(/nothing in the feed yet/i)).toBeInTheDocument();
 
 		expect(screen.getByLabelText('Open navigation menu')).toBeInTheDocument();
 		expect(screen.getByLabelText('Sidebar navigation')).toBeInTheDocument();
@@ -35,10 +41,27 @@ describe('AppRouter', () => {
 		expect(screen.getByLabelText(/^description$/i)).toBeInTheDocument();
 	});
 
-	it('redirects unknown post ids to home', () => {
+	it('publishes a post to the local feed', async () => {
+		const user = userEvent.setup();
+
+		renderWithProviders(<AppRouter />, { route: '/' });
+
+		await user.click(screen.getByRole('button', { name: /^new post$/i }));
+		await user.type(screen.getByLabelText(/username/i), 'maker_alex');
+		await user.type(screen.getByLabelText(/^description$/i), 'Built a new prototype today.');
+		await user.click(screen.getByRole('button', { name: /publish update/i }));
+
+		await waitFor(() => {
+			expect(screen.queryByRole('dialog', { name: /new post/i })).not.toBeInTheDocument();
+		});
+
+		expect(await screen.findByText(/built a new prototype today/i)).toBeInTheDocument();
+	});
+
+	it('redirects unknown post ids to home', async () => {
 		renderWithProviders(<AppRouter />, { route: '/posts/unknown-post' });
 
-		expect(screen.getByRole('heading', { name: /^feed$/i })).toBeInTheDocument();
+		expect(await screen.findByRole('heading', { name: /^feed$/i })).toBeInTheDocument();
 		expect(screen.getByText(/nothing in the feed yet/i)).toBeInTheDocument();
 	});
 

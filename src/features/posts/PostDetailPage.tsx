@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 
+import type { FeedPost } from '@/domain/feed-types';
+import { loadFeedPostById } from '@/lib/load-feed-post';
+import { useFeedPosts } from '@/app/providers/use-feed-posts';
 import { ROUTES } from '@/config/constants';
-import { getMockFeedPostById } from '@/data/feed-mock';
 import { PostActions } from '@/components/feed/PostActions';
 import { PostMedia } from '@/components/feed/PostMedia';
 import { PostTypeBadge } from '@/components/feed/PostTypeBadge';
@@ -39,10 +41,49 @@ export function PostDetailPage() {
 	const { postId } = useParams<{ postId: string }>();
 	const navigate = useNavigate();
 	const location = useLocation();
+	const { getPostById } = useFeedPosts();
 	const locationState = location.state as PostDetailLocationState | null;
 	const returnTo = locationState?.from ?? ROUTES.home;
+	const [post, setPost] = useState<FeedPost | undefined>(() =>
+		postId ? getPostById(postId) : undefined,
+	);
+	const [isLoading, setIsLoading] = useState(Boolean(postId && !post));
 
-	const post = postId ? getMockFeedPostById(postId) : undefined;
+	useEffect(() => {
+		if (!postId) {
+			return;
+		}
+
+		const cachedPost = getPostById(postId);
+		if (cachedPost) {
+			setPost(cachedPost);
+			setIsLoading(false);
+			return;
+		}
+
+		let cancelled = false;
+		setIsLoading(true);
+
+		void loadFeedPostById(postId)
+			.then((loadedPost) => {
+				if (!cancelled) {
+					setPost(loadedPost);
+				}
+			})
+			.finally(() => {
+				if (!cancelled) {
+					setIsLoading(false);
+				}
+			});
+
+		return () => {
+			cancelled = true;
+		};
+	}, [postId, getPostById]);
+
+	if (isLoading) {
+		return <p className="py-12 text-center text-body-md text-text-muted">Loading post…</p>;
+	}
 
 	if (!post) {
 		return <Navigate to={ROUTES.home} replace />;
