@@ -13,6 +13,7 @@ import { PostDetailPage } from '@/features/posts/PostDetailPage';
 import { SavedPage } from '@/features/saved/SavedPage';
 import { SignupPage } from '@/features/auth/SignupPage';
 import { ProfileSetupPage } from '@/features/auth/ProfileSetupPage';
+import { AuthCallbackPage } from '@/features/auth/AuthCallbackPage';
 
 function ShellLayout() {
 	return (
@@ -31,6 +32,7 @@ function ShellLayout() {
 				<Route path="/auth/login" element={<LoginPage />} />
 				<Route path="/auth/signup" element={<SignupPage />} />
 				<Route path="/auth/profile-setup" element={<ProfileSetupPage />} />
+				<Route path="/auth/callback" element={<AuthCallbackPage />} />
 			</Routes>
 		</AppShell>
 	);
