@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 
 import { SHELL_SIDEBAR_NAV_ITEMS } from '@/config/constants';
-import { MOCK_CURRENT_USER } from '@/data/feed-mock';
+import { useAuth } from '@/app/providers/auth-context';
 import { Avatar } from '@/components/ui/Avatar';
 import { cn } from '@/lib/cn';
 import {
@@ -59,29 +59,32 @@ export function ShellNavItems({ onNavigate }: ShellNavItemsProps) {
 }
 
 export function ShellUserCard() {
+	const { profile, signOut } = useAuth();
+	const displayName = profile?.displayName ?? 'Guest';
 	return (
 		<div className="flex items-center justify-between rounded-xl border border-border-subtle bg-surface-raised p-3">
 			<div className="flex min-w-0 items-center gap-3">
 				<Avatar
-					alt={MOCK_CURRENT_USER.displayName}
-					src={MOCK_CURRENT_USER.avatarUrl}
-					fallback={MOCK_CURRENT_USER.displayName.charAt(0)}
+					alt={displayName}
+					src={profile?.avatarUrl}
+					fallback={displayName.charAt(0)}
 				/>
 				<div className="min-w-0">
 					<p className="truncate text-label-md font-medium text-text-primary">
-						{MOCK_CURRENT_USER.displayName}
+						{displayName}
 					</p>
 					<p className="truncate text-caption text-text-muted">
-						@{MOCK_CURRENT_USER.handle}
+						{profile ? `@${profile.handle}` : 'Not signed in'}
 					</p>
 				</div>
 			</div>
 			<button
 				type="button"
-				className="p-1 text-text-faint transition-colors hover:text-text-primary"
-				aria-label="Account menu"
+				className="p-1 text-caption text-text-faint transition-colors hover:text-text-primary"
+				aria-label="Sign out"
+				onClick={() => void signOut()}
 			>
-				<IconMore className="size-[18px]" />
+				{profile ? 'Sign out' : <IconMore className="size-[18px]" />}
 			</button>
 		</div>
 	);

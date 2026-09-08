@@ -1,0 +1,18 @@
+import type { FeedPost, PostType } from '@/domain/feed-types';
+import type { ComposePublishInput } from '@/domain/compose-publish';
+import { getSupabaseClient } from '@/integrations/supabase/client';
+
+const TYPE_BADGES: Record<PostType, string> = { update: 'Update', question: 'Question', resource: 'Resource', milestone: 'Milestone' };
+type JoinedRow = { id: string; author_id: string; project_id: string | null; type: string; title: string | null; body: string; tags: string[]; created_at: string; author: { id: string; display_name: string; handle: string; avatar_url: string | null } | null; project: { id: string; slug: string; name: string; category: string; avatar_url: string | null } | null };
+
+function postedAgo(createdAt: string) { const seconds = Math.max(0, Math.floor((Date.now() - new Date(createdAt).getTime()) / 1000)); if (seconds < 60) return 'just now'; if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`; if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`; return `${Math.floor(seconds / 86400)}d ago`; }
+function mapPost(row: JoinedRow): FeedPost {
+  const author = row.author ?? { id: row.author_id, display_name: 'Project Social user', handle: 'user', avatar_url: null };
+  return { id: row.id, type: row.type as PostType, project: row.project ? { id: row.project.id, slug: row.project.slug, name: row.project.name, category: row.project.category, initial: row.project.name.charAt(0).toUpperCase() || 'P', accentClassName: 'text-primary', avatarUrl: row.project.avatar_url } : null, author: { id: author.id, displayName: author.display_name, handle: author.handle, avatarUrl: author.avatar_url }, postedAgo: postedAgo(row.created_at), body: row.body, title: row.title ?? undefined, badge: TYPE_BADGES[row.type as PostType] ?? row.type, tags: row.tags ?? [], media: undefined, likes: 0, comments: 0, mediaFilter: 'code' };
+}
+
+const select = 'id,author_id,project_id,type,title,body,tags,created_at,author:profiles!posts_author_id_fkey(id,display_name,handle,avatar_url),project:projects!posts_project_id_fkey(id,slug,name,category,avatar_url)';
+export async function listRemotePosts() { const { data, error } = await getSupabaseClient().from('posts').select(select).order('created_at', { ascending: false }); if (error) throw error; return ((data ?? []) as unknown as JoinedRow[]).map(mapPost); }
+export async function listRemotePostsForProject(projectId: string) { const { data, error } = await getSupabaseClient().from('posts').select(select).eq('project_id', projectId).order('created_at', { ascending: false }); if (error) throw error; return ((data ?? []) as unknown as JoinedRow[]).map(mapPost); }
+export async function listRemotePostsForAuthor(authorId: string) { const { data, error } = await getSupabaseClient().from('posts').select(select).eq('author_id', authorId).order('created_at', { ascending: false }); if (error) throw error; return ((data ?? []) as unknown as JoinedRow[]).map(mapPost); }
+export async function createRemotePost(authorId: string, input: ComposePublishInput) { const tags = input.tagsInput.split(',').map((tag) => tag.trim()).filter(Boolean); const { data, error } = await getSupabaseClient().from('posts').insert({ author_id: authorId, project_id: input.projectId || null, type: input.postType, title: input.title.trim() || null, body: input.body.trim(), tags, ai_assisted: input.aiAssisted }).select(select).single(); if (error) throw error; return mapPost(data as unknown as JoinedRow); }

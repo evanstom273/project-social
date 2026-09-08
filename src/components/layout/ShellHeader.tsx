@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 import { useCompose } from '@/app/providers/use-compose';
 import { APP_NAME, ROUTES, SHELL_HEADER_NAV_ITEMS } from '@/config/constants';
-import { MOCK_CURRENT_USER } from '@/data/feed-mock';
+import { useAuth } from '@/app/providers/auth-context';
 import { Avatar } from '@/components/ui/Avatar';
 import { cn } from '@/lib/cn';
 import { IconAdd, IconBell, IconMenu, IconSearch } from '@/components/feed/icons';
@@ -20,6 +20,8 @@ type ShellHeaderProps = {
 
 export function ShellHeader({ onMenuOpen }: ShellHeaderProps) {
 	const { openCompose } = useCompose();
+	const { profile } = useAuth();
+	const displayName = profile?.displayName ?? 'Guest';
 
 	return (
 		<header className="glass-surface fixed inset-x-0 top-0 z-40 border-b shadow-[0_1px_12px_rgba(0,0,0,0.5)]">
@@ -102,9 +104,9 @@ export function ShellHeader({ onMenuOpen }: ShellHeaderProps) {
 					</button>
 					<NavLink to={ROUTES.profile} aria-label="Profile">
 						<Avatar
-							alt={MOCK_CURRENT_USER.displayName}
-							src={MOCK_CURRENT_USER.avatarUrl}
-							fallback={MOCK_CURRENT_USER.displayName.charAt(0)}
+							alt={displayName}
+							src={profile?.avatarUrl}
+							fallback={displayName.charAt(0)}
 							size="sm"
 						/>
 					</NavLink>

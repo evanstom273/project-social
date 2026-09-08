@@ -7,6 +7,7 @@ import { useProjects } from '@/app/providers/use-projects';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 import { IconClose, IconPlay, IconSend } from '@/components/feed/icons';
+import { useAuth } from '@/app/providers/auth-context';
 
 type FeedComposerProps = {
 	onPublish?: () => void;
@@ -46,16 +47,6 @@ const PUBLISH_LABELS: Record<PostType, string> = {
 	milestone: 'Post Milestone',
 };
 
-const USERNAME_STORAGE_KEY = 'project-social:compose-username';
-
-function readStoredUsername() {
-	return sessionStorage.getItem(USERNAME_STORAGE_KEY) ?? '';
-}
-
-function normalizeHandle(value: string) {
-	return value.trim().replace(/^@/, '').replace(/\s+/g, '_').toLowerCase();
-}
-
 async function readVideoDurationSeconds(file: File): Promise<number> {
 	return new Promise((resolve, reject) => {
 		const video = document.createElement('video');
@@ -77,8 +68,9 @@ async function readVideoDurationSeconds(file: File): Promise<number> {
 export function FeedComposer({ onPublish }: FeedComposerProps) {
 	const { publishPost } = useFeedPosts();
 	const { projects } = useProjects();
+	const { profile } = useAuth();
 	const [postType, setPostType] = useState<PostType>('update');
-	const [username, setUsername] = useState(readStoredUsername);
+	const username = profile?.handle ?? '';
 	const [title, setTitle] = useState('');
 	const [body, setBody] = useState('');
 	const [tagsInput, setTagsInput] = useState('');
@@ -90,9 +82,7 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 	const [publishError, setPublishError] = useState<string | null>(null);
 	const [aiAssisted, setAiAssisted] = useState(false);
 	const [isPublishing, setIsPublishing] = useState(false);
-
-	const handle = normalizeHandle(username);
-	const displayHandle = handle ? `@${handle}` : '@your_handle';
+	const displayHandle = username ? `@${username}` : '@your_handle';
 
 	useEffect(() => {
 		return () => {
@@ -152,7 +142,6 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 		setTagsInput('');
 		setProjectName('');
 		setProjectId(null);
-		setCommunityName('');
 		clearAttachedMedia();
 		setAiAssisted(false);
 		setPublishError(null);
@@ -168,19 +157,15 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 		setIsPublishing(true);
 
 		try {
-			if (username.trim()) {
-				sessionStorage.setItem(USERNAME_STORAGE_KEY, username.trim());
-			}
-
 			await publishPost({
 				postType,
-				username,
+				username: profile?.handle ?? '',
 				title,
 				body,
 				tagsInput,
 				projectName,
 				projectId,
-				communityName,
+				communityName: '',
 				aiAssisted,
 				mediaFile: attachedMedia?.file,
 			});
@@ -235,7 +220,8 @@ export function FeedComposer({ onPublish }: FeedComposerProps) {
 							<input
 								type="text"
 								value={username}
-								onChange={(event) => setUsername(event.target.value)}
+								readOnly
+								aria-readonly="true"
 								placeholder="e.g. maker_alex"
 								autoComplete="off"
 								className="h-11 w-full rounded-xl border border-border-subtle bg-surface px-3 text-body-md text-text-primary placeholder:text-text-faint focus:border-primary focus:outline-none"

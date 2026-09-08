@@ -12,6 +12,7 @@ import { ProjectsPage } from '@/features/projects/ProjectsPage';
 import { PostDetailPage } from '@/features/posts/PostDetailPage';
 import { SavedPage } from '@/features/saved/SavedPage';
 import { SignupPage } from '@/features/auth/SignupPage';
+import { ProfileSetupPage } from '@/features/auth/ProfileSetupPage';
 
 function ShellLayout() {
 	return (
@@ -26,8 +27,10 @@ function ShellLayout() {
 				<Route path="/projects/:projectId" element={<ProjectsPage />} />
 				<Route path="/saved" element={<SavedPage />} />
 				<Route path="/profile" element={<ProfilePage />} />
+				<Route path="/users/:handle" element={<ProfilePage />} />
 				<Route path="/auth/login" element={<LoginPage />} />
 				<Route path="/auth/signup" element={<SignupPage />} />
+				<Route path="/auth/profile-setup" element={<ProfileSetupPage />} />
 			</Routes>
 		</AppShell>
 	);

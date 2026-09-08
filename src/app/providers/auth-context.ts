@@ -5,10 +5,18 @@ export type AuthUser = {
   email: string | null;
 };
 
+export type AuthProfile = { id: string; handle: string; displayName: string; avatarUrl: string | null; bio: string | null };
+
 export type AuthContextValue = {
   user: AuthUser | null;
+  profile: AuthProfile | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (input: { email: string; password: string; handle: string; displayName: string; ageConfirmed: boolean }) => Promise<{ needsEmailConfirmation: boolean }>;
+  signInWithProvider: (provider: 'google' | 'github') => Promise<void>;
+  signOut: () => Promise<void>;
+  saveProfile: (input: { handle: string; displayName: string; bio: string; avatarUrl?: string | null }) => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextValue | null>(null);

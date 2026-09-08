@@ -1,16 +1,15 @@
-import { ButtonLink } from '@/components/ui/Button';
-import { PlaceholderPanel } from '@/components/ui/PlaceholderPanel';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/app/providers/auth-context';
+import { Button } from '@/components/ui/Button';
 import { ROUTES } from '@/config/constants';
 
 export function SignupPage() {
-	return (
-		<PlaceholderPanel
-			title="Join early access"
-			description="Account creation is not wired up yet. This route reserves the early-access flow described in the product concept."
-		>
-			<ButtonLink to={ROUTES.login} variant="secondary">
-				Already have an account
-			</ButtonLink>
-		</PlaceholderPanel>
-	);
+  const { signUp, signInWithProvider } = useAuth(); const navigate = useNavigate();
+  const [form, setForm] = useState({ email: '', password: '', handle: '', displayName: '', ageConfirmed: false }); const [error, setError] = useState(''); const [notice, setNotice] = useState(''); const [busy, setBusy] = useState(false);
+  function update(key: keyof typeof form, value: string | boolean) { setForm((current) => ({ ...current, [key]: value })); }
+  async function submit(event: FormEvent) { event.preventDefault(); setError(''); setNotice(''); setBusy(true); try { const result = await signUp(form); if (result.needsEmailConfirmation) setNotice('Check your email to confirm your account, then sign in to finish your profile.'); else navigate(ROUTES.profileSetup); } catch (err) { setError(err instanceof Error ? err.message : 'Could not create your account.'); } finally { setBusy(false); } }
+  async function provider(provider: 'google' | 'github') { setError(''); try { await signInWithProvider(provider); } catch (err) { setError(err instanceof Error ? err.message : 'Could not start OAuth sign-up.'); } }
+  return <div className="mx-auto max-w-md py-8"><div className="glass-card rounded-2xl border p-6"><h1 className="text-headline-md font-bold">Create your account</h1><p className="mt-2 text-body-md text-text-muted">Set up a maker profile and keep your projects in one place.</p><form className="mt-6 space-y-4" onSubmit={(event) => void submit(event)}><label className="block"><span className="mb-1 block text-label-md">Display name</span><input required maxLength={80} value={form.displayName} onChange={(event) => update('displayName', event.target.value)} className="h-11 w-full rounded-xl border border-border-subtle bg-surface px-3" /></label><label className="block"><span className="mb-1 block text-label-md">Handle</span><input required minLength={3} maxLength={30} pattern="[a-zA-Z0-9_]+" placeholder="maker_alex" value={form.handle} onChange={(event) => update('handle', event.target.value)} className="h-11 w-full rounded-xl border border-border-subtle bg-surface px-3" /><span className="mt-1 block text-caption text-text-faint">3–30 letters, numbers, or underscores.</span></label><label className="block"><span className="mb-1 block text-label-md">Email</span><input required type="email" autoComplete="email" value={form.email} onChange={(event) => update('email', event.target.value)} className="h-11 w-full rounded-xl border border-border-subtle bg-surface px-3" /></label><label className="block"><span className="mb-1 block text-label-md">Password</span><input required minLength={8} type="password" autoComplete="new-password" value={form.password} onChange={(event) => update('password', event.target.value)} className="h-11 w-full rounded-xl border border-border-subtle bg-surface px-3" /></label><label className="flex items-start gap-2 text-body-sm text-text-muted"><input required type="checkbox" checked={form.ageConfirmed} onChange={(event) => update('ageConfirmed', event.target.checked)} className="mt-1" />I confirm that I meet the platform’s minimum age requirement.</label>{error ? <p className="text-body-sm text-error">{error}</p> : null}{notice ? <p className="text-body-sm text-primary">{notice}</p> : null}<Button type="submit" disabled={busy} className="w-full">{busy ? 'Creating account…' : 'Create account'}</Button></form><div className="my-5 flex items-center gap-3 text-caption text-text-faint"><span className="h-px flex-1 bg-border-subtle" />or<span className="h-px flex-1 bg-border-subtle" /></div><div className="grid gap-2 sm:grid-cols-2"><Button variant="secondary" onClick={() => void provider('google')}>Continue with Google</Button><Button variant="secondary" onClick={() => void provider('github')}>Continue with GitHub</Button></div><p className="mt-6 text-center text-body-sm text-text-muted">Already have an account? <Link className="text-primary hover:underline" to={ROUTES.login}>Sign in</Link></p></div></div>;
 }

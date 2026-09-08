@@ -39,25 +39,21 @@ describe('AppRouter', () => {
 		await user.click(screen.getByRole('button', { name: /^new post$/i }));
 
 		expect(screen.getByRole('dialog', { name: /new post/i })).toBeInTheDocument();
-		expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
+		expect(screen.getByText(/posting identity/i)).toBeInTheDocument();
 		expect(screen.getByLabelText(/^description$/i)).toBeInTheDocument();
 	});
 
-	it('publishes a post to the local feed', async () => {
+	it('does not publish when unauthenticated', async () => {
 		const user = userEvent.setup();
 
 		renderWithProviders(<AppRouter />, { route: '/' });
 
 		await user.click(screen.getByRole('button', { name: /^new post$/i }));
-		await user.type(screen.getByLabelText(/username/i), 'maker_alex');
 		await user.type(screen.getByLabelText(/^description$/i), 'Built a new prototype today.');
 		await user.click(screen.getByRole('button', { name: /publish update/i }));
 
-		await waitFor(() => {
-			expect(screen.queryByRole('dialog', { name: /new post/i })).not.toBeInTheDocument();
-		});
-
-		expect(await screen.findByText(/built a new prototype today/i)).toBeInTheDocument();
+		await waitFor(() => expect(screen.getByRole('dialog', { name: /new post/i })).toBeInTheDocument());
+		expect(screen.queryByRole('article')).not.toBeInTheDocument();
 	});
 
 	it('redirects unknown post ids to home', async () => {
