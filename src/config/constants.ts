@@ -6,6 +6,8 @@ export const ROUTES = {
 	projects: '/projects',
 	saved: '/saved',
 	profile: '/profile',
+	profileSetup: '/auth/profile-setup',
+	user: (handle: string) => `/users/${handle}`,
 	login: '/auth/login',
 	signup: '/auth/signup',
 	project: (id: string) => `/projects/${id}`,

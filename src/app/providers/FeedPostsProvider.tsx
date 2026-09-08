@@ -3,10 +3,8 @@ import { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react
 import type { FeedPost } from '@/domain/feed-types';
 import type { ComposePublishInput } from '@/domain/compose-publish';
 import { FeedPostsContext } from '@/app/providers/feed-posts-context';
-import {
-	listPublishedPosts,
-	savePublishedPost,
-} from '@/integrations/local/published-post-store';
+import { createRemotePost, listRemotePosts } from '@/data/remote-posts';
+import { useAuth } from './auth-context';
 
 type FeedPostsProviderProps = {
 	children: ReactNode;
@@ -15,20 +13,24 @@ type FeedPostsProviderProps = {
 export function FeedPostsProvider({ children }: FeedPostsProviderProps) {
 	const [posts, setPosts] = useState<FeedPost[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const { user } = useAuth();
 
 	const refreshPosts = useCallback(async () => {
-		const nextPosts = await listPublishedPosts();
+		const nextPosts = await listRemotePosts();
 		setPosts(nextPosts);
 	}, []);
 
 	useEffect(() => {
 		let cancelled = false;
 
-		void listPublishedPosts()
+		void listRemotePosts()
 			.then((loadedPosts) => {
 				if (!cancelled) {
 					setPosts(loadedPosts);
 				}
+			})
+			.catch(() => {
+				if (!cancelled) setPosts([]);
 			})
 			.finally(() => {
 				if (!cancelled) {
@@ -42,10 +44,11 @@ export function FeedPostsProvider({ children }: FeedPostsProviderProps) {
 	}, []);
 
 	const publishPost = useCallback(async (input: ComposePublishInput) => {
-		const post = await savePublishedPost(input);
+		if (!user) throw new Error('Sign in to publish a post.');
+		const post = await createRemotePost(user.id, input);
 		setPosts((current) => [post, ...current]);
 		return post;
-	}, []);
+	}, [user]);
 
 	const getPostById = useCallback(
 		(postId: string) => posts.find((post) => post.id === postId),
